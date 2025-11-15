@@ -1,0 +1,322 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #2a1848 0, #05030b 55%);
+  color: #f5f5f5;
+}
+
+.app {
+  width: 100%;
+  max-width: 1100px;
+  padding: 32px 16px;
+}
+
+.app-inner {
+  width: 100%;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2.8rem;
+  letter-spacing: 0.05em;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: #b7b4c9;
+  font-size: 0.95rem;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Top info card */
+
+.puzzle-meta {
+  background: #161320e6;
+  border-radius: 14px;
+  padding: 16px 20px;
+  border: 1px solid #2a213a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.puzzle-meta h2 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #a89bd8;
+}
+
+.category-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.units {
+  margin: 0;
+  color: #bbbbbb;
+  font-size: 0.85rem;
+}
+
+.score-block {
+  text-align: right;
+}
+
+.score-text {
+  font-weight: 600;
+}
+
+.score-feedback {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+/* Layout */
+
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.top-bar {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.check-button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #5b4777;
+  background: #3a2b50;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.check-button:disabled {
+  background: #2a203a;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+/* TierMaker-style board */
+
+.tier-board {
+  width: 100%;
+  max-width: 960px;
+  background: #0c0914f2;
+  border-radius: 14px;
+  border: 1px solid #2a213a;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+.tier-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  min-height: 80px;
+  border-bottom: 1px solid #2a213a;
+}
+
+.tier-row:last-child {
+  border-bottom: none;
+}
+
+.tier-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* TierMaker-like colors per tier */
+.tier-s {
+  background: #ff4b4b;
+}
+
+.tier-a {
+  background: #ff9248;
+}
+
+.tier-b {
+  background: #ffd74a;
+  color: #ffffff;   /* changed to white */
+}
+
+.tier-c {
+  background: #65d96b;
+  color: #ffffff;   /* changed to white */
+}
+
+.tier-d {
+  background: #4ab0ff;
+}
+
+.tier-label-text {
+  line-height: 1;
+}
+
+.tier-label-range {
+  font-size: 0.7rem;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+
+.tier-content {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tier-empty {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.tier-item-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #241b32;
+  border: 1px solid #3a2b50;
+  font-size: 0.8rem;
+}
+
+/* Items pool */
+
+.items-pool {
+  width: 100%;
+  max-width: 960px;
+  background: #161320e6;
+  border-radius: 14px;
+  border: 1px solid #2a213a;
+  padding: 16px 18px 20px;
+}
+
+.items-pool h3 {
+  margin: 0;
+}
+
+.items-hint {
+  margin: 4px 0 10px;
+  font-size: 0.85rem;
+  color: #b3aec7;
+}
+
+.items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.items-list-entry {
+  min-width: 220px;
+}
+
+.item-chip {
+  display: inline-block;
+  background: #241b32;
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid #3a2b50;
+  font-size: 0.95rem;
+}
+
+.item-tier-buttons {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tier-btn {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #3a2b50;
+  background: #241b32;
+  color: #f5f5f5;
+  cursor: pointer;
+}
+
+.tier-btn-active {
+  background: #4c3470;
+  border-color: #7c5fba;
+}
+
+.item-selected {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.item-result {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.item-result.correct {
+  color: #6fe96f;
+}
+
+.item-result.incorrect {
+  color: #ff6b6b;
+}
+
+/* Responsive tweaks */
+
+@media (max-width: 768px) {
+  .tier-row {
+    grid-template-columns: 90px minmax(0, 1fr);
+  }
+
+  .app-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .items-list-entry {
+    min-width: 100%;
+  }
+}
