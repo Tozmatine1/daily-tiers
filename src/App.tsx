@@ -21,7 +21,7 @@ type DraggableItemProps = {
   isActive?: boolean;
 };
 
-function DraggableItem({ id, name, onClick, isActive }: DraggableItemProps) {
+function DraggableItem({ id, name, isActive }: DraggableItemProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
 
   const style: CSSProperties = {
@@ -46,7 +46,7 @@ function DraggableItem({ id, name, onClick, isActive }: DraggableItemProps) {
       </button>
 
       {/* main tappable text area */}
-      <span className="item-chip-label" onClick={onClick}>
+      <span className="item-chip-label">
         {name}
       </span>
     </div>
@@ -122,8 +122,6 @@ function App() {
 
   // itemId -> correct? after checking
   const [results, setResults] = useState<Record<string, boolean> | null>(null);
-
-  const [activeItemForTierSelect, setActiveItemForTierSelect] = useState<string | null>(null);
 
 
   const allAnswered = Object.values(playerTiers).every((tier) => tier !== "");
@@ -261,37 +259,7 @@ function App() {
       <DraggableItem
   id={item.id}
   name={item.name}
-  isActive={activeItemForTierSelect === item.id}
-  onClick={() => {
-    console.log("Clicked item", item.id);           // 👈 add this
-    setActiveItemForTierSelect((prev) =>
-      prev === item.id ? null : item.id
-    );
-  }}
 />
-
-      {activeItemForTierSelect === item.id && (
-        <div className="item-tier-buttons">
-          {puzzle.category.tiers.map((tier) => (
-            <button
-              key={tier.id}
-              onClick={() =>
-                setPlayerTiers((prev) => ({
-                  ...prev,
-                  [item.id]: tier.id,
-                }))
-              }
-              className={
-                playerTiers[item.id] === tier.id
-                  ? "tier-btn tier-btn-active"
-                  : "tier-btn"
-              }
-            >
-              {tier.id}
-            </button>
-          ))}
-        </div>
-      )}
 
       {results && (
         <div
@@ -301,7 +269,10 @@ function App() {
               : "item-result incorrect"
           }
         >
-          {results[item.id] ? "Correct ✓" : "Incorrect ✗"}
+          {item.name}{" "}
+<span className={results[item.id] ? "result-check" : "result-x"}>
+  {results[item.id] ? "✓" : "✗"}
+</span>
         </div>
       )}
     </li>
@@ -343,11 +314,23 @@ function App() {
             <div key={tier.id} className="results-tier-block">
               <h4>{tier.id} Tier</h4>
               <ul>
-                {tierItems.map((item) => (
-                  <li key={item.id}>
-                    {item.name} {results[item.id] ? "✓" : "✗"}
-                  </li>
-                ))}
+                {tierItems.map((item: { id: string; name: string }) => {
+  const isCorrect = results[item.id];
+
+  return (
+    <li key={item.id}>
+      {item.name}{" "}
+      <span
+        style={{
+          color: isCorrect ? "#4CFF4C" : "#FF4C4C",
+          fontWeight: 700,
+        }}
+      >
+        {isCorrect ? "✓" : "✗"}
+      </span>
+    </li>
+  );
+})}
               </ul>
             </div>
           );

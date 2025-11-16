@@ -695,6 +695,16 @@ body {
      1px  1px 0 #000;
 }
 
+.result-check {
+  color: #4CFF4C !important;   /* bright green */
+  font-weight: 700 !important;
+}
+
+.result-x {
+  color: #FF4C4C !important;   /* bright red */
+  font-weight: 700 !important;
+}
+
 @media (max-width: 768px) {
   .tier-row .tier-stats {
     font-size: 0.8rem !important;
