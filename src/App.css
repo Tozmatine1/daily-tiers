@@ -751,3 +751,15 @@ body {
 .item-drag-overlay.chip-locked:active {
   cursor: default !important;
 }
+
+/* Green checkmark */
+.result-check {
+  color: #22c55e !important;   /* bright green */
+  font-weight: bold;
+}
+
+/* Red X */
+.result-x {
+  color: #ef4444 !important;   /* bright red */
+  font-weight: bold;
+}

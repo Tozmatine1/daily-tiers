@@ -1,6 +1,6 @@
 // src/utils/getTierForValue.ts
 
-import type { TierDefinition, TierId } from "../types/Puzzle";
+import type { TierDefinition, TierId } from "../types/puzzle";
 
 // Given a stat value and the category's tier definitions,
 // return the correct TierId (S, A, B, C, or D).

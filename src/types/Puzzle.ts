@@ -1,4 +1,4 @@
-// src/types/Puzzle.ts
+// src/types/puzzle.ts
 
 export type TierId = "S" | "A" | "B" | "C" | "D";
 
@@ -12,8 +12,8 @@ export type TierDefinition = {
 export type CategoryConfig = {
   id: string;
   name: string;
-  units: string;
-  tiers: TierDefinition[];
+  units: string;            // 👈 MUST have a type
+  tiers: TierDefinition[];  // 👈 MUST have a type
 };
 
 export type Item = {
