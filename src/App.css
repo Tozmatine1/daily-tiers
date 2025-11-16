@@ -427,6 +427,25 @@ body {
   .item-chip-wrapper {
     margin: 1px 2px;
   }
+
+  .tier-stats {
+  position: absolute;
+  top: 4px;                  /* tweak this for exact vertical taste */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  font-size: .9rem;
+  font-weight: 700;
+  margin: 0;
+  opacity: 1;
+  pointer-events: none;      /* so dragging items isn't blocked */
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
 }
 
 /* Extra-small phones */
