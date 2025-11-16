@@ -701,6 +701,19 @@ body {
     font-size: 0.8rem !important;
     line-height: 1.1 !important;
   }
+  .tier-row {
+    min-height: 120px;      /* taller base row on mobile */
+    position: relative;     /* needed for absolute stats */
+  }
+
+  .tier-content {
+    padding-top: 28px;      /* leave room under the stats line */
+    align-items: flex-start;
+  }
+
+  .tier-stats {
+    top: 4px;               /* keep it snug at the top */
+  }
 }
   .items-list-entry {
     flex: 0 0 auto !important;
