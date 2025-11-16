@@ -199,7 +199,7 @@ function App() {
         <main className="app-main">
           <section className="puzzle-meta">
             <div>
-              <h2>Daily</h2>
+              <h2>Daily Tiers</h2>
               <p className="category-name">{puzzle.category.name}</p>
           
             </div>

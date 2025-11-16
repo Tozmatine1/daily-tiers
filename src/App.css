@@ -4,18 +4,18 @@
   color-scheme: dark;
 }
 
-#root {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden;  /* prevent sideways scroll */
+  overflow-x: hidden; /* prevent sideways scroll */
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 *,
@@ -25,11 +25,10 @@ body {
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
   background: radial-gradient(circle at top, #2a1848 0, #05030b 55%);
   color: #f5f5f5;
-  padding: 24px 0;   /* vertical padding only */
+  padding: 24px 0; /* vertical padding only */
 }
 
 .app {
@@ -45,23 +44,6 @@ body {
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.app-header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 2.8rem;
-  letter-spacing: 0.05em;
-}
-
-.subtitle {
-  margin-top: 8px;
-  color: #b7b4c9;
-  font-size: 0.95rem;
 }
 
 .app-main {
@@ -128,14 +110,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  align-items: stretch;  /* keep this */
+  align-items: stretch;
 }
 
 .top-bar {
   width: 100%;
   max-width: 960px;
   display: flex;
-  justify-content: center;   /* 👈 center the button */
+  justify-content: center;
 }
 
 .check-button {
@@ -188,6 +170,7 @@ body {
 }
 
 /* TierMaker-like colors per tier */
+
 .tier-s {
   background: #ff4b4b;
 }
@@ -198,12 +181,12 @@ body {
 
 .tier-b {
   background: #ffd74a;
-  color: #ffffff;   /* changed to white */
+  color: #ffffff;
 }
 
 .tier-c {
   background: #65d96b;
-  color: #ffffff;   /* changed to white */
+  color: #ffffff;
 }
 
 .tier-d {
@@ -249,7 +232,7 @@ body {
   border-radius: 14px;
   border: 1px solid #2a213a;
   padding: 16px 18px 20px;
-  min-height: 120px; /* keeps box from collapsing vertically */
+  min-height: 120px;
 }
 
 .items-pool h3 {
@@ -267,17 +250,17 @@ body {
   padding: 8px 8px 12px 12px;
   margin: 0;
   display: flex;
-  flex-wrap: nowrap;    /* 👈 no wrapping */
+  flex-wrap: nowrap;
   gap: 10px;
-  overflow-x: auto;     /* 👈 horizontal scroll */
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
 .items-list-entry {
-  flex: 0 0 120px;        /* or whatever width you're using */
+  flex: 0 0 120px;
   display: flex;
-  flex-direction: column; /* 👈 stack chip + buttons vertically */
-  align-items: center;    /* center them horizontally */
+  flex-direction: column;
+  align-items: center;
 }
 
 .item-chip {
@@ -289,12 +272,9 @@ body {
   font-size: 0.95rem;
   user-select: none;
   -webkit-user-select: none;
-}
-
-.item-chip {
-  white-space: nowrap;        /* keep all text on one line */
-  overflow: hidden;           /* hide overflow past the pill */
-  text-overflow: ellipsis;    /* add "…" if text is too long */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-drag-handle {
@@ -314,20 +294,20 @@ body {
   pointer-events: none;
 }
 
-.item-tier-buttons {
-  margin-top: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  justify-content: center;
-}
-
 .item-chip-wrapper {
   display: block;
 }
 
 .item-chip-wrapper-active .item-chip {
   box-shadow: inset 0 0 0 2px #7c5fba;
+}
+
+.item-tier-buttons {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  justify-content: center;
 }
 
 .tier-btn {
@@ -369,26 +349,11 @@ body {
   opacity: 0.5;
 }
 
-.item-tier-buttons {
-  display: flex;
-  flex-wrap: nowrap;     /* 👈 prevent wrapping */
-  gap: 4px;
-  justify-content: center;  /* optional */
-}
-
 /* Responsive tweaks */
 
 @media (max-width: 768px) {
   .app {
     padding-top: 4px;
-  }
-
-  .app-header h1 {
-    font-size: 2.2rem;
-  }
-
-  .subtitle {
-    font-size: 0.85rem;
   }
 
   .puzzle-meta {
@@ -407,25 +372,22 @@ body {
     grid-template-columns: 80px minmax(0, 1fr);
   }
 
-  /* 🔹 Fix items pool for mobile */
-
   .items-list {
-    list-style: none;
     margin: 0;
-    padding: 8px 4px 12px;      /* a bit of breathing room on sides */
+    padding: 8px 4px 12px;
     display: flex;
-    flex-wrap: nowrap;          /* 👈 horizontal row */
+    flex-wrap: nowrap;
     gap: 10px;
-    overflow-x: auto;           /* 👈 horizontal slider */
+    overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;  /* smooth iOS scrolling */
+    -webkit-overflow-scrolling: touch;
   }
 
   .items-list-entry {
-    flex: 0 0 70%;              /* each “card” takes ~70% of screen */
-    max-width: 260px;           /* stops them from being huge on tablets */
+    flex: 0 0 70%;
+    max-width: 260px;
     display: flex;
-    flex-direction: column;     /* chip on top, buttons under */
+    flex-direction: column;
     align-items: stretch;
   }
 
@@ -438,49 +400,32 @@ body {
 
   .item-tier-buttons {
     justify-content: center;
-    margin-top: 4px;
-  }
-
-   .top-bar {
-    justify-content: center;   /* center the button on mobile */
   }
 
   .check-button {
-    width: 100%;               /* make it a big, thumb-friendly button */
+    width: 100%;
     text-align: center;
     padding: 10px 12px;
   }
 
   .tier-label {
-    font-size: 0.95rem;        /* slightly smaller tier label */
+    font-size: 0.95rem;
     padding: 4px 2px;
   }
 
   .tier-content {
-    padding: 6px 8px;          /* tighten content padding a bit */
+    padding: 6px 8px;
     gap: 4px;
   }
 
-  .item-chip-wrapper-active .item-chip {
-  box-shadow: inset 0 0 0 2px #7c5fba;  /* inward glow */
-}
-
   .item-chip-wrapper {
-    margin: 1px 2px;   /* tiny inset so the glow isn't flush to the edges */
+    margin: 1px 2px;
   }
 }
 
 @media (max-width: 480px) {
   .app {
     padding: 16px 8px;
-  }
-
-  .app-header h1 {
-    font-size: 1.7rem;
-  }
-
-  .subtitle {
-    font-size: 0.8rem;
   }
 
   .puzzle-meta {
@@ -519,9 +464,11 @@ body {
 @media (min-width: 960px) {
   .app {
     max-width: 960px;
-    min-width: 960px;  /* 👈 pin the width on desktop */
+    min-width: 960px;
   }
 }
+
+/* Results panel & modal */
 
 .results-panel {
   margin-top: 16px;
@@ -572,15 +519,16 @@ body {
 
 .results-backdrop {
   position: fixed;
-  inset: 0;                        /* top:0; right:0; bottom:0; left:0 */
-  background: rgba(0, 0, 0, 0.6);  /* dim the background */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;                   /* above everything */
+  z-index: 9999;
 }
 
 .results-modal {
+  position: relative;
   background: #161320e6;
   border-radius: 16px;
   border: 1px solid #2a213a;
@@ -601,37 +549,6 @@ body {
   font-weight: 600;
 }
 
-/* reuse your earlier layout for tiers inside the modal */
-.results-tiers {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 0.9rem;
-}
-
-.results-tier-block {
-  flex: 1 1 150px;
-  min-width: 150px;
-}
-
-.results-tier-block h4 {
-  margin: 0 0 4px;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #a89bd8;
-}
-
-.results-tier-block ul {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-}
-
-.results-tier-block li {
-  margin-bottom: 2px;
-}
-
 .results-close {
   position: absolute;
   top: 12px;
@@ -646,17 +563,4 @@ body {
 
 .results-close:hover {
   opacity: 1;
-}
-
-.results-modal {
-  position: relative;       /* 👈 add this */
-  background: #161320e6;
-  border-radius: 16px;
-  border: 1px solid #2a213a;
-  padding: 20px 22px 22px;
-  max-width: 520px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
 }
