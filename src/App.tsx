@@ -118,20 +118,7 @@ function App() {
   const allAnswered = Object.values(playerTiers).every((tier) => tier !== "");
   const totalCorrect =
     results == null ? null : Object.values(results).filter(Boolean).length;
-
-  let feedbackText = "";
-  if (typeof totalCorrect === "number") {
-    if (totalCorrect === puzzle.items.length) {
-      feedbackText = "Perfect! You nailed every tier.";
-    } else if (totalCorrect >= 8) {
-      feedbackText = "Nice work! You really know your stuff.";
-    } else if (totalCorrect >= 5) {
-      feedbackText = "Not bad at all. Some tiers were tricky.";
-    } else {
-      feedbackText = "Brutal. Today was rough. Tomorrow will be better.";
-    }
-  }
-
+    
  function checkAnswers() {
   const scoreObject: Record<string, boolean> = {};
   puzzle.items.forEach((item) => {
@@ -203,15 +190,6 @@ function App() {
               <p className="category-name">{puzzle.category.name}</p>
           
             </div>
-
-            {typeof totalCorrect === "number" && (
-              <div className="score-block">
-                <div className="score-text">
-                  Score: {totalCorrect} / {puzzle.items.length}
-                </div>
-                <div className="score-feedback">{feedbackText}</div>
-              </div>
-            )}
           </section>
 
           <DndContext

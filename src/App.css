@@ -9,7 +9,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden; /* prevent sideways scroll */
+  overflow-x: hidden;
 }
 
 #root {
@@ -26,17 +26,16 @@ body {
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #2a1848 0, #05030b 55%);
+  background: radial-gradient(circle at center, #2a1848 0, #05030b 55%);
   color: #f5f5f5;
-  padding: 24px 0; /* vertical padding only */
 }
 
+/* Base app width for laptops / small desktop */
 .app {
   width: 100%;
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
-  padding: 32px 16px;
 }
 
 .app-inner {
@@ -169,7 +168,7 @@ body {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-/* TierMaker-like colors per tier */
+/* Tier colors */
 
 .tier-s {
   background: #ff4b4b;
@@ -231,12 +230,6 @@ body {
   background: #161320e6;
   border-radius: 14px;
   border: 1px solid #2a213a;
-  padding: 16px 18px 20px;
-  min-height: 120px;
-}
-
-.items-pool h3 {
-  margin: 0;
 }
 
 .items-hint {
@@ -349,11 +342,16 @@ body {
   opacity: 0.5;
 }
 
-/* Responsive tweaks */
+/* Mobile: main breakpoint */
 
 @media (max-width: 768px) {
+  body {
+    padding-top: 0;
+    padding-bottom: 16px;
+  }
+
   .app {
-    padding-top: 4px;
+    padding: 8px 12px 16px;
   }
 
   .puzzle-meta {
@@ -423,13 +421,15 @@ body {
   }
 }
 
+/* Extra-small phones */
+
 @media (max-width: 480px) {
   .app {
-    padding: 16px 8px;
+    padding: 6px 8px 14px;
   }
 
   .puzzle-meta {
-    padding: 12px 14px;
+    padding: 10px 12px;
     gap: 6px;
   }
 
@@ -447,7 +447,7 @@ body {
   }
 
   .items-pool {
-    padding: 12px 14px 16px;
+    padding: 10px 12px 14px;
   }
 
   .item-chip {
@@ -461,12 +461,80 @@ body {
   }
 }
 
-@media (min-width: 960px) {
+@media (min-width: 900px) {
+
+  /* 16:9 aspect ratio width */
+  /* For a typical 1440p monitor (2560×1440): 1440 * (16/9) ≈ 2560px wide 
+     We can't exceed the screen, so we use safe 1600px which fits all desktops cleanly */
   .app {
-    max-width: 960px;
-    min-width: 960px;
+    max-width: 1600px;        /* 16:9-friendly wide layout */
+    padding: 64px 40px;       /* very large desktop spacing */
+  }
+
+  /* Double global text scale */
+  body {
+    font-size: 22px;          /* full 100% bump */
+  }
+
+  /* Tiers are BIG now */
+  .tier-row {
+    min-height: 160px;        /* doubled from ~80px */
+  }
+
+  /* Giant tier label bars */
+  .tier-label {
+    font-size: 2rem;
+    padding: 20px 10px;
+  }
+
+  /* Tier content big and roomy */
+  .tier-content {
+    padding: 20px 28px;
+    gap: 16px;
+  }
+
+  /* Item pills giant */
+  .item-chip {
+    font-size: 1.6rem;        /* double sizing */
+    padding: 22px 30px;
+    border-radius: 999px;
+  }
+
+  /* Tier selection buttons much bigger */
+  .tier-btn {
+    font-size: 1.2rem;
+    padding: 14px 18px;
+    border-radius: 8px;
+  }
+
+  /* Giant check/results button */
+  .check-button {
+    font-size: 1.5rem;
+    padding: 20px 30px;
+    border-radius: 12px;
+  }
+
+  /* Puzzle metadata enlarged */
+  .puzzle-meta {
+    padding: 40px 48px;
+    gap: 28px;
+  }
+
+  .puzzle-meta h2 {
+    font-size: 1.6rem;
+  }
+
+  .category-name {
+    font-size: 2rem;
+  }
+
+  /* Results modal enlarged */
+  .results-modal {
+    max-width: 800px;
+    padding: 40px 48px;
   }
 }
+
 
 /* Results panel & modal */
 
