@@ -380,7 +380,7 @@ body {
 
 @media (max-width: 768px) {
   .app {
-    padding: 24px 12px;
+    padding-top: 4px;
   }
 
   .app-header h1 {
@@ -406,16 +406,6 @@ body {
   .tier-row {
     grid-template-columns: 80px minmax(0, 1fr);
   }
-
-  @media (max-width: 768px) {
-  body {
-    padding-top: 0;
-  }
-
-  .app {
-    padding-top: 4px;
-  }
-}
 
   /* 🔹 Fix items pool for mobile */
 
@@ -669,34 +659,4 @@ body {
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
-}
-
-@media (max-width: 768px) {
-  html,
-  body {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  #root {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .app {
-    margin: 0 !important;
-    padding: 8px 12px 24px !important; /* small top padding so it's not glued to the edge */
-  }
-
-  /* If the header container still exists, hide it completely */
-  .app-header {
-    display: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Make sure the first child in .app isn't adding its own top margin */
-  .app > *:first-child {
-    margin-top: 0 !important;
-  }
 }
