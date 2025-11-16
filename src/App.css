@@ -390,6 +390,10 @@ body {
     align-items: stretch;
   }
 
+  .items-pool {
+    padding: 0px 0px 0px;
+  }
+
   .item-chip {
     width: 100%;
     text-align: center;
@@ -426,6 +430,7 @@ body {
 
 @media (max-width: 480px) {
   .app {
+    margin-bottom:100px;
     padding: 0px 8px 0px;
   }
 
@@ -476,6 +481,10 @@ body {
   /* Tiers are BIG now */
   .tier-row {
     min-height: 160px;        /* doubled from ~80px */
+  }
+
+.items-pool {
+    padding: 0px 0px 0px;
   }
 
   /* Giant tier label bars */
