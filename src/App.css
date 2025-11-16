@@ -13,21 +13,24 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: radial-gradient(circle at top, #2a1848 0, #05030b 55%);
   color: #f5f5f5;
+  display: flex;                 /* center horizontally */
+  justify-content: center;
+  padding-top: 40px;
 }
 
 .app {
   width: 100%;
-  max-width: 1100px;
+  margin: 0 auto;
   padding: 32px 16px;
 }
 
 .app-inner {
-  width: 100%;
+  width: 960px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .app-header {
@@ -106,7 +109,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  align-items: center;
+  align-items: stretch;  /* keep this */
 }
 
 .top-bar {
@@ -136,11 +139,10 @@ body {
 
 .tier-board {
   width: 100%;
-  max-width: 960px;
   background: #0c0914f2;
   border-radius: 14px;
   border: 1px solid #2a213a;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -224,11 +226,11 @@ body {
 
 .items-pool {
   width: 100%;
-  max-width: 960px;
   background: #161320e6;
   border-radius: 14px;
   border: 1px solid #2a213a;
   padding: 16px 18px 20px;
+  min-height: 120px; /* keeps box from collapsing vertically */
 }
 
 .items-pool h3 {
@@ -243,15 +245,20 @@ body {
 
 .items-list {
   list-style: none;
-  padding: 0;
+  padding: 8px 8px 12px 12px;
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;    /* 👈 no wrapping */
   gap: 10px;
+  overflow-x: auto;     /* 👈 horizontal scroll */
+  overflow-y: hidden;
 }
 
 .items-list-entry {
-  min-width: 220px;
+  flex: 0 0 120px;        /* or whatever width you're using */
+  display: flex;
+  flex-direction: column; /* 👈 stack chip + buttons vertically */
+  align-items: center;    /* center them horizontally */
 }
 
 .item-chip {
@@ -263,11 +270,43 @@ body {
   font-size: 0.95rem;
 }
 
+.item-chip {
+  white-space: nowrap;        /* keep all text on one line */
+  overflow: hidden;           /* hide overflow past the pill */
+  text-overflow: ellipsis;    /* add "…" if text is too long */
+}
+
+.item-drag-handle {
+  cursor: grab;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.item-chip-placed {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.item-chip-overlay {
+  position: fixed;
+  z-index: 999999;
+  pointer-events: none;
+}
+
 .item-tier-buttons {
-  margin-top: 6px;
+  margin-top: 4px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  justify-content: center;
+}
+
+.item-chip-wrapper {
+  display: block;
+}
+
+.item-chip-wrapper-active .item-chip {
+  box-shadow: 0 0 0 2px #7c5fba;
 }
 
 .tier-btn {
@@ -305,6 +344,10 @@ body {
   color: #ff6b6b;
 }
 
+.item-placed .item-chip {
+  opacity: 0.5;
+}
+
 /* Responsive tweaks */
 
 @media (max-width: 768px) {
@@ -319,4 +362,142 @@ body {
   .items-list-entry {
     min-width: 100%;
   }
+}
+
+.results-panel {
+  margin-top: 16px;
+  background: #161320e6;
+  border-radius: 14px;
+  border: 1px solid #2a213a;
+  padding: 16px 18px 20px;
+}
+
+.results-panel h3 {
+  margin: 0 0 6px;
+}
+
+.results-panel p {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.results-tiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.results-tier-block {
+  flex: 1 1 150px;
+  min-width: 150px;
+}
+
+.results-tier-block h4 {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a89bd8;
+}
+
+.results-tier-block ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.results-tier-block li {
+  margin-bottom: 2px;
+}
+
+.results-backdrop {
+  position: fixed;
+  inset: 0;                        /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(0, 0, 0, 0.6);  /* dim the background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;                   /* above everything */
+}
+
+.results-modal {
+  background: #161320e6;
+  border-radius: 16px;
+  border: 1px solid #2a213a;
+  padding: 20px 22px 22px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+}
+
+.results-modal h3 {
+  margin: 0 0 8px;
+}
+
+.results-modal p {
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+/* reuse your earlier layout for tiers inside the modal */
+.results-tiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.results-tier-block {
+  flex: 1 1 150px;
+  min-width: 150px;
+}
+
+.results-tier-block h4 {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a89bd8;
+}
+
+.results-tier-block ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.results-tier-block li {
+  margin-bottom: 2px;
+}
+
+.results-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.results-close:hover {
+  opacity: 1;
+}
+
+.results-modal {
+  position: relative;       /* 👈 add this */
+  background: #161320e6;
+  border-radius: 16px;
+  border: 1px solid #2a213a;
+  padding: 20px 22px 22px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
 }
