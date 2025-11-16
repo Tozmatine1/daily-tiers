@@ -391,10 +391,9 @@ body {
   }
 
   .item-chip {
-    width: 100%;
     text-align: center;
     font-size: 0.9rem;
-    padding: 8px 10px;
+    padding: 2px 2px;
   }
 
   .item-tier-buttons {
@@ -497,8 +496,8 @@ body {
 
   /* Item pills giant */
   .item-chip {
-    font-size: 1.6rem;        /* double sizing */
-    padding: 10px 30px;
+    font-size: 1.5rem;        /* double sizing */
+    padding: 0px 15px;
     border-radius: 999px;
   }
 
