@@ -747,3 +747,11 @@ body {
 .item-drag-overlay:active {
   cursor: grabbing;
 }
+
+.item-drag-overlay.chip-locked {
+  cursor: default !important;
+}
+
+.item-drag-overlay.chip-locked:active {
+  cursor: default !important;
+}

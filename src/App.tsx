@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { CSSProperties } from "react";
 import {
   DndContext,
@@ -13,37 +13,45 @@ import {
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { TodayPuzzle } from "./data/nbaCareerPoints";
 
-// Draggable item in the pool
+const DAILY_PUZZLE_ID = "nba-career-points-2025-11-16";  // 👈 pick any unique string
+const STORAGE_KEY = `dailyTiersAttempt_${DAILY_PUZZLE_ID}`;
+
+
 type DraggableItemProps = {
   id: string;
   name: string;
   onClick?: () => void;
   isActive?: boolean;
+  disabled?: boolean;
 };
 
-function DraggableItem({ id, name, isActive }: DraggableItemProps) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
-
+function DraggableItem({ id, name, isActive, disabled }: DraggableItemProps) {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id,
+    disabled: !!disabled,
+  });
+  
   const style: CSSProperties = {
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
     zIndex: transform ? 999 : "auto",
     boxShadow: isActive ? "0 0 0 2px #7c5fba" : undefined,
+    cursor: disabled ? "default" : "grab",
   };
 
   return (
     <div ref={setNodeRef} style={style} className="item-chip">
       {/* drag handle now on the LEFT */}
       <button
-        type="button"
-        className="item-drag-overlay"
-        {...listeners}
-        {...attributes}
-        aria-label={`Drag ${name}`}
-      >
-      
-      </button>
+  type="button"
+  className={`item-drag-overlay ${disabled ? "chip-locked" : ""}`}
+  {...(!disabled ? listeners : {})}   // no drag listeners when disabled
+  {...attributes}
+  aria-label={`Drag ${name}`}
+>
+  
+</button>
 
       {/* main tappable text area */}
       <span className="item-chip-label">
@@ -59,9 +67,16 @@ type DroppableTierProps = {
   label: string;
   rangeText: string;
   items: { id: string; name: string }[];
+  disableDrag: boolean;
 };
 
-function DroppableTier({ id, label, rangeText, items }: DroppableTierProps) {
+function DroppableTier({
+  id,
+  label,
+  rangeText,
+  items,
+  disableDrag,
+}: DroppableTierProps) {
   const { setNodeRef, isOver } = useDroppable({ id });
 
   return (
@@ -87,7 +102,7 @@ function DroppableTier({ id, label, rangeText, items }: DroppableTierProps) {
           <div className="tier-empty"></div>
         ) : (
           items.map((item) => (
-            <DraggableItem key={item.id} id={item.id} name={item.name} />
+            <DraggableItem key={item.id} id={item.id} name={item.name} disabled={disableDrag}/>
           ))
         )}
       </div>
@@ -108,27 +123,108 @@ function App() {
 
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
 
-  const [showResults, setShowResults] = useState(false);
+   const [showResults, setShowResults] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
 
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+
+      const stored = JSON.parse(raw) as {
+        results?: Record<string, boolean>;
+      };
+
+      // If they already played, open the modal automatically
+      return !!stored.results;
+    } catch (err) {
+      console.error("Failed to load showResults", err);
+      return false;
+    }
+  });
 
   const { setNodeRef: setPoolRef, isOver: isOverPool } = useDroppable({
     id: "POOL",
   });
 
   // itemId -> chosen tier
-  const [playerTiers, setPlayerTiers] = useState<Record<string, string>>(
-    () => Object.fromEntries(puzzle.items.map((item) => [item.id, ""]))
-  );
+    const [playerTiers, setPlayerTiers] = useState<Record<string, string>>(() => {
+    // default: everyone in the pool
+    const emptyPlayerTiers: Record<string, string> = Object.fromEntries(
+      puzzle.items.map((item) => [item.id, ""])
+    );
+
+    if (typeof window === "undefined") {
+      return emptyPlayerTiers;
+    }
+
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return emptyPlayerTiers;
+
+      const stored = JSON.parse(raw) as {
+        playerTiers?: Record<string, string>;
+      };
+
+      return stored.playerTiers ?? emptyPlayerTiers;
+    } catch (err) {
+      console.error("Failed to load saved playerTiers", err);
+      return emptyPlayerTiers;
+    }
+  });
 
   // itemId -> correct? after checking
-  const [results, setResults] = useState<Record<string, boolean> | null>(null);
+  const [results, setResults] = useState<Record<string, boolean> | null>(() => {
+    if (typeof window === "undefined") return null;
 
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
 
+      const stored = JSON.parse(raw) as {
+        results?: Record<string, boolean>;
+      };
+
+      return stored.results ?? null;
+    } catch (err) {
+      console.error("Failed to load saved results", err);
+      return null;
+    }
+  });
+  // 👇 NEW: track if this user has already submitted in this session
+   const [hasSubmitted, setHasSubmitted] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+
+      const stored = JSON.parse(raw) as {
+        results?: Record<string, boolean>;
+      };
+
+      // If we have results saved, we consider the attempt "used"
+      return !!stored.results;
+    } catch (err) {
+      console.error("Failed to load hasSubmitted", err);
+      return false;
+    }
+  });
   const allAnswered = Object.values(playerTiers).every((tier) => tier !== "");
   const totalCorrect =
     results == null ? null : Object.values(results).filter(Boolean).length;
     
- function checkAnswers() {
+function checkAnswers() {
+  // If they've already submitted, just reopen the results modal
+  if (hasSubmitted) {
+    if (results) {
+      setShowResults(true);
+    }
+    return;
+  }
+
+  // First-time submission: require a complete board
+  if (!allAnswered) return;
+
   const scoreObject: Record<string, boolean> = {};
   puzzle.items.forEach((item) => {
     const chosen = playerTiers[item.id];
@@ -136,7 +232,20 @@ function App() {
   });
 
   setResults(scoreObject);
-  setShowResults(true);   // 👈 open modal
+  setShowResults(true);
+  setHasSubmitted(true);
+
+  try {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        playerTiers,
+        results: scoreObject,
+      })
+    );
+  } catch (err) {
+    console.error("Failed to save attempt", err);
+  }
 }
   function handleDragStart(event: DragStartEvent) {
     setActiveDragId(String(event.active.id));
@@ -209,12 +318,16 @@ function App() {
             <section className="game-layout">
               <div className="top-bar">
                 <button
-                  onClick={checkAnswers}
-                  disabled={!allAnswered}
-                  className="check-button"
-                >
-                  {allAnswered ? "Check Answers" : "Complete the Tier List"}
-                </button>
+  onClick={checkAnswers}
+  disabled={!allAnswered && !hasSubmitted}
+  className="check-button"
+>
+  {hasSubmitted
+    ? "View Results"
+    : allAnswered
+    ? "Check Answers"
+    : "Complete the Tier List"}
+</button>
               </div>
 
               <DragOverlay>
@@ -235,12 +348,13 @@ function App() {
 
                   return (
                     <DroppableTier
-                      key={tier.id}
-                      id={tier.id}
-                      label={`${tier.id} Tier`}
-                      rangeText={rangeText}
-                      items={itemsInThisTier}
-                    />
+  key={tier.id}
+  id={tier.id}
+  label={`${tier.id} Tier`}
+  rangeText={rangeText}
+  items={itemsInThisTier}
+  disableDrag={hasSubmitted}
+/>
                   );
                 })}
               </div>
@@ -259,6 +373,7 @@ function App() {
       <DraggableItem
   id={item.id}
   name={item.name}
+  disabled={hasSubmitted}
 />
 
       {results && (
