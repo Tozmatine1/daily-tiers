@@ -768,17 +768,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 12px;
+  margin-top: 10px;
 }
 
 .pool-scroll-button {
   border: none;
-  padding: 4px 8px;
+  padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.16);
   color: #f5f5f5;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -788,19 +788,23 @@ body {
 
 .pool-scroll-track {
   position: relative;
-  width: 120px;
-  height: 4px;
+  width: 100%;
+  max-width: 280px;
+  height: 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
   overflow: hidden;
 }
 
 .pool-scroll-knob {
-  width: 24px;
-  height: 12px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 25%;
+  min-width: 40px;
+  height: 18px;
   border-radius: 999px;
   background: #7c5fba;
-  margin-top: -4px; /* sit centered over the track */
-  margin-left: auto;
-  margin-right: auto;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  cursor: grab;
 }

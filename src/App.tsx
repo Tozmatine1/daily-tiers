@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useRef, type CSSProperties } from "react";
+import { useState, useEffect, useRef, type CSSProperties, type MouseEvent, type PointerEvent as ReactPointerEvent} from "react";
 import {
   DndContext,
   DragOverlay,
@@ -130,8 +130,66 @@ function DroppableTier({
 function App() {
   const { puzzle, puzzleId } = getPuzzleForDate();
   const STORAGE_KEY = `dailyTiersAttempt_${puzzleId}`;
-  const poolScrollRef = useRef<HTMLUListElement | null>(null);
 
+  const poolScrollRef = useRef<HTMLUListElement | null>(null);
+  const [poolScrollProgress, setPoolScrollProgress] = useState(0);
+  
+const [isDraggingKnob, setIsDraggingKnob] = useState(false);
+const trackRef = useRef<HTMLDivElement | null>(null);
+const knobDragStateRef = useRef<{
+  startX: number;
+  startScrollLeft: number;
+  trackWidth: number;
+} | null>(null);
+
+function updatePoolScrollProgress() {
+  const list = poolScrollRef.current;
+  if (!list) return;
+
+  const maxScroll = list.scrollWidth - list.clientWidth;
+  if (maxScroll <= 0) {
+    setPoolScrollProgress(0);
+    return;
+  }
+
+  setPoolScrollProgress(list.scrollLeft / maxScroll);
+}
+
+function handlePoolScroll() {
+  updatePoolScrollProgress();
+}
+
+function handlePoolTrackClick(e: MouseEvent<HTMLDivElement>) {
+  const track = e.currentTarget;
+  const rect = track.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const ratio = rect.width > 0 ? clickX / rect.width : 0;
+
+  const list = poolScrollRef.current;
+  if (!list) return;
+
+  const maxScroll = list.scrollWidth - list.clientWidth;
+  list.scrollTo({
+    left: maxScroll * ratio,
+    behavior: "smooth",
+  });
+}
+
+function handleKnobPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
+  e.preventDefault();
+  const list = poolScrollRef.current;
+  const track = trackRef.current;
+  if (!list || !track) return;
+
+  const trackWidth = track.clientWidth;
+  knobDragStateRef.current = {
+    startX: e.clientX,
+    startScrollLeft: list.scrollLeft,
+    trackWidth,
+  };
+
+  setIsDraggingKnob(true);
+}
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -141,6 +199,42 @@ function App() {
     })
   );
 
+  useEffect(() => {
+  if (!isDraggingKnob) return;
+
+  function onPointerMove(ev: PointerEvent) {
+    const list = poolScrollRef.current;
+    const dragState = knobDragStateRef.current;
+    if (!list || !dragState) return;
+
+    const { startX, startScrollLeft, trackWidth } = dragState;
+    const maxScroll = list.scrollWidth - list.clientWidth;
+    if (maxScroll <= 0 || trackWidth <= 0) return;
+
+    const deltaX = ev.clientX - startX;
+    const deltaProgress = deltaX / trackWidth;
+    let newScrollLeft = startScrollLeft + deltaProgress * maxScroll;
+
+    if (newScrollLeft < 0) newScrollLeft = 0;
+    if (newScrollLeft > maxScroll) newScrollLeft = maxScroll;
+
+    list.scrollTo({ left: newScrollLeft });
+    updatePoolScrollProgress();
+  }
+
+  function onPointerUp() {
+    setIsDraggingKnob(false);
+    knobDragStateRef.current = null;
+  }
+
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+
+  return () => {
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+  };
+}, [isDraggingKnob]);
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
 
   const [showResults, setShowResults] = useState<boolean>(() => {
@@ -420,11 +514,13 @@ const [shuffledItemIds] = useState<string[]>(() => {
               <div
   className="items-pool"
   ref={setPoolRef}
-  style={
-    isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined
-  }
+  style={isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined}
 >
-  <ul className="items-list" ref={poolScrollRef}>
+  <ul
+    className="items-list"
+    ref={poolScrollRef}
+    onScroll={handlePoolScroll}
+  >
     {puzzle.items
       .filter((item: PuzzleItem) => playerTiers[item.id] === "")
       .map((item: PuzzleItem) => (
@@ -457,34 +553,37 @@ const [shuffledItemIds] = useState<string[]>(() => {
       ))}
   </ul>
 
-  {/* scroll knob / controls */}
   <div className="pool-scroll-controls">
     <button
       type="button"
       className="pool-scroll-button"
       onClick={() =>
-        poolScrollRef.current?.scrollBy({
-          left: -160,
-          behavior: "smooth",
-        })
+        poolScrollRef.current?.scrollBy({ left: -160, behavior: "smooth" })
       }
       aria-label="Scroll items left"
     >
       ◀
     </button>
 
-    <div className="pool-scroll-track">
-      <div className="pool-scroll-knob" />
+    <div
+      className="pool-scroll-track"
+      ref={trackRef}
+      onClick={handlePoolTrackClick}
+    >
+      <div
+        className="pool-scroll-knob"
+        onPointerDown={handleKnobPointerDown}
+        style={{
+          left: `${poolScrollProgress * 75}%`, // knob travels across ~75% of track
+        }}
+      />
     </div>
 
     <button
       type="button"
       className="pool-scroll-button"
       onClick={() =>
-        poolScrollRef.current?.scrollBy({
-          left: 160,
-          behavior: "smooth",
-        })
+        poolScrollRef.current?.scrollBy({ left: 160, behavior: "smooth" })
       }
       aria-label="Scroll items right"
     >
