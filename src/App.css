@@ -276,17 +276,41 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #241b32;
+  border-radius: 999px;
+  padding: 6px 10px;
+  border: 1px solid #3a2b50;
+  font-size: 0.95rem;
+  user-select: none;
+  white-space: nowrap;
 }
 
 .item-drag-handle {
   cursor: grab;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  border: none;
+  background: transparent;
+  padding: 0 4px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #b8add8;
+  touch-action: none; /* IMPORTANT for mobile dragging */
+}
+
+.item-drag-handle:active {
+  cursor: grabbing;
 }
 
 .item-chip-placed {
   opacity: 0.4;
   cursor: default;
+}
+
+.item-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-chip-overlay {

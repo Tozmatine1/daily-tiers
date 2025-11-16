@@ -28,21 +28,27 @@ function DraggableItem({ id, name, onClick, isActive }: DraggableItemProps) {
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
-    cursor: "grab",
     zIndex: transform ? 999 : "auto",
     boxShadow: isActive ? "0 0 0 2px #7c5fba" : undefined,
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      onClick={onClick}
-      {...listeners}
-      {...attributes}
-      className="item-chip"
-    >
-      {name}
+    <div ref={setNodeRef} style={style} className="item-chip">
+      {/* drag handle now on the LEFT */}
+      <button
+        type="button"
+        className="item-drag-handle"
+        {...listeners}
+        {...attributes}
+        aria-label={`Drag ${name}`}
+      >
+        ⋮⋮
+      </button>
+
+      {/* main tappable text area */}
+      <span className="item-chip-label" onClick={onClick}>
+        {name}
+      </span>
     </div>
   );
 }
