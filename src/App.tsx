@@ -37,12 +37,12 @@ function DraggableItem({ id, name, isActive }: DraggableItemProps) {
       {/* drag handle now on the LEFT */}
       <button
         type="button"
-        className="item-drag-handle"
+        className="item-drag-overlay"
         {...listeners}
         {...attributes}
         aria-label={`Drag ${name}`}
       >
-        ⋮⋮
+      
       </button>
 
       {/* main tappable text area */}
