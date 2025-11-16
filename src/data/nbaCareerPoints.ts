@@ -7,7 +7,7 @@ import { getTierForValue } from "../utils/getTierForValue";
 // Category config: defines what S/A/B/C/D mean in terms of points
 export const NBA_CAREER_POINTS: CategoryConfig = {
   id: "nba_career_points",
-  name: "NBA – All-Time Scorers",
+  name: "All-Time NBA Scorers",
   units: "points",
   tiers: [
     { id: "S", label: "S Tier", minValue: 35000, maxValue: null },

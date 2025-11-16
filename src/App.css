@@ -453,6 +453,14 @@ body {
     padding: 6px 8px;          /* tighten content padding a bit */
     gap: 4px;
   }
+
+  .item-chip-wrapper-active .item-chip {
+    box-shadow: 0 0 0 1px #7c5fba;  /* was 2px – make it slimmer */
+  }
+
+  .item-chip-wrapper {
+    margin: 2px 4px;   /* tiny inset so the glow isn't flush to the edges */
+  }
 }
 
 @media (max-width: 480px) {
