@@ -4,6 +4,23 @@
   color-scheme: dark;
 }
 
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  width: 100%;
+  max-width: 960px;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  justify-content: center;
+}
+
 *,
 *::before,
 *::after {
@@ -15,20 +32,20 @@ body {
   min-height: 100vh;
   background: radial-gradient(circle at top, #2a1848 0, #05030b 55%);
   color: #f5f5f5;
-  display: flex;                 /* center horizontally */
-  justify-content: center;
-  padding-top: 40px;
+  padding: 24px 0;   /* vertical padding only */
 }
 
 .app {
   width: 100%;
-  margin: 0 auto;
+  max-width: 960px;      /* cap width on desktop */
+  margin-left: auto;     /* center horizontally */
+  margin-right: auto;    /* center horizontally */
   padding: 32px 16px;
 }
 
 .app-inner {
-  width: 960px;
-  max-width: 100%;
+  width: 100%;           /* just fill .app */
+  max-width: 960px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -142,7 +159,7 @@ body {
   background: #0c0914f2;
   border-radius: 14px;
   border: 1px solid #2a213a;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -268,6 +285,8 @@ body {
   padding: 8px 12px;
   border: 1px solid #3a2b50;
   font-size: 0.95rem;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .item-chip {
@@ -351,16 +370,123 @@ body {
 /* Responsive tweaks */
 
 @media (max-width: 768px) {
-  .tier-row {
-    grid-template-columns: 90px minmax(0, 1fr);
+  .app {
+    padding: 24px 12px;
   }
 
   .app-header h1 {
     font-size: 2.2rem;
   }
 
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .puzzle-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .score-block {
+    text-align: left;
+    width: 100%;
+  }
+
+  .tier-row {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+
+  /* 🔹 Fix items pool for mobile */
+
+  .items-list {
+    flex-wrap: wrap;        /* let items wrap to new lines */
+    overflow-x: visible;    /* no sideways scroll */
+    padding: 0;
+    gap: 8px;
+  }
+
   .items-list-entry {
+    flex: 1 1 100%;         /* each row takes full width */
     min-width: 100%;
+    align-items: stretch;
+  }
+
+  .item-chip {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  .item-tier-buttons {
+    justify-content: flex-start;
+  }
+
+   .top-bar {
+    justify-content: center;   /* center the button on mobile */
+  }
+
+  .check-button {
+    width: 100%;               /* make it a big, thumb-friendly button */
+    text-align: center;
+    padding: 10px 12px;
+  }
+
+  .tier-label {
+    font-size: 0.95rem;        /* slightly smaller tier label */
+    padding: 4px 2px;
+  }
+
+  .tier-content {
+    padding: 6px 8px;          /* tighten content padding a bit */
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 16px 8px;
+  }
+
+  .app-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .puzzle-meta {
+    padding: 12px 14px;
+    gap: 6px;
+  }
+
+  .tier-row {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .tier-label {
+    font-size: 0.9rem;
+    padding: 4px 2px;
+  }
+
+  .tier-label-range {
+    font-size: 0.65rem;
+  }
+
+  .items-pool {
+    padding: 12px 14px 16px;
+  }
+
+  .item-chip {
+    font-size: 0.85rem;
+    padding: 7px 8px;
+  }
+
+  .check-button {
+    font-size: 0.85rem;
+    padding: 8px 10px;
   }
 }
 
