@@ -677,3 +677,20 @@ body {
     line-height: 1.1 !important;
   }
 }
+  .items-list-entry {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .item-chip {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: 140px !important;   /* you can adjust this number */
+    padding: 4px 8px !important;   /* small, clean pill shape */
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
