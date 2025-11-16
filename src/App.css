@@ -393,12 +393,13 @@ body {
 
   .puzzle-meta {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 8px;
   }
 
   .score-block {
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
 
