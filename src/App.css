@@ -473,6 +473,11 @@ body {
     font-size: 0.85rem;
     padding: 8px 10px;
   }
+
+.tier-stats {
+    font-size: 0.8rem;
+  }
+
 }
 
 @media (min-width: 900px) {
@@ -666,4 +671,9 @@ body {
      1px  1px 0 #000;
 }
 
-
+@media (max-width: 768px) {
+  .tier-row .tier-stats {
+    font-size: 0.8rem !important;
+    line-height: 1.1 !important;
+  }
+}
