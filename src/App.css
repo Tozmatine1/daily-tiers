@@ -409,11 +409,11 @@ body {
 
   @media (max-width: 768px) {
   body {
-    padding-top: 4px;
+    padding-top: 0;
   }
 
   .app {
-    padding-top: 8px;
+    padding-top: 0;
   }
 }
 
