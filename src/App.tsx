@@ -208,7 +208,7 @@ function App() {
             <div>
               <h2>Today's Category</h2>
               <p className="category-name">{puzzle.category.name}</p>
-              <p className="units">Stat: {puzzle.category.units}</p>
+          
             </div>
 
             {typeof totalCorrect === "number" && (
@@ -233,7 +233,7 @@ function App() {
                   disabled={!allAnswered}
                   className="check-button"
                 >
-                  {allAnswered ? "Check Answers" : "Assign all items first"}
+                  {allAnswered ? "Check Answers" : "Complete the Tier List"}
                 </button>
               </div>
 

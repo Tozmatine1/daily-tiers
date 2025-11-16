@@ -7,18 +7,15 @@
 #root {
   display: flex;
   justify-content: center;
-}
-
-.app {
   width: 100%;
-  max-width: 960px;
 }
 
 html,
 body {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  overflow-x: hidden;
-  justify-content: center;
+  overflow-x: hidden;  /* prevent sideways scroll */
 }
 
 *,
@@ -37,14 +34,14 @@ body {
 
 .app {
   width: 100%;
-  max-width: 960px;      /* cap width on desktop */
-  margin-left: auto;     /* center horizontally */
-  margin-right: auto;    /* center horizontally */
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
   padding: 32px 16px;
 }
 
 .app-inner {
-  width: 100%;           /* just fill .app */
+  width: 100%;
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
@@ -95,6 +92,11 @@ body {
   color: #a89bd8;
 }
 
+.puzzle-meta > :first-child {
+  flex: 1 1 100%;
+  text-align: center;
+}
+
 .category-name {
   margin: 0;
   font-size: 1.2rem;
@@ -133,7 +135,7 @@ body {
   width: 100%;
   max-width: 960px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;   /* 👈 center the button */
 }
 
 .check-button {
@@ -367,6 +369,13 @@ body {
   opacity: 0.5;
 }
 
+.item-tier-buttons {
+  display: flex;
+  flex-wrap: nowrap;     /* 👈 prevent wrapping */
+  gap: 4px;
+  justify-content: center;  /* optional */
+}
+
 /* Responsive tweaks */
 
 @media (max-width: 768px) {
@@ -421,6 +430,7 @@ body {
 
   .item-tier-buttons {
     justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
    .top-bar {
@@ -487,6 +497,15 @@ body {
   .check-button {
     font-size: 0.85rem;
     padding: 8px 10px;
+  }
+}
+
+@media (min-width: 960px) {
+  .app {
+    transform: scale(1.5) translateY(-17.5%);
+    transform-origin: top center;
+    max-width: 960px;
+    min-width: 960px;  /* 👈 pin the width on desktop */
   }
 }
 
