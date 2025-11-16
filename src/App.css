@@ -390,10 +390,6 @@ body {
     align-items: stretch;
   }
 
-  .items-pool {
-    padding: 0px 0px 0px;
-  }
-
   .item-chip {
     width: 100%;
     text-align: center;
