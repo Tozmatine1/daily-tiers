@@ -351,6 +351,7 @@ body {
   }
 
   .app {
+    margin-bottom: 100px;
     padding: 0px 12px 0px;
   }
 
@@ -462,13 +463,9 @@ body {
 }
 
 @media (min-width: 900px) {
-
-  /* 16:9 aspect ratio width */
-  /* For a typical 1440p monitor (2560×1440): 1440 * (16/9) ≈ 2560px wide 
-     We can't exceed the screen, so we use safe 1600px which fits all desktops cleanly */
   .app {
     max-width: 1600px;        /* 16:9-friendly wide layout */
-    padding: 64px 40px;       /* very large desktop spacing */
+    padding: 30px 40px;       /* very large desktop spacing */
   }
 
   /* Double global text scale */
@@ -496,7 +493,7 @@ body {
   /* Item pills giant */
   .item-chip {
     font-size: 1.6rem;        /* double sizing */
-    padding: 22px 30px;
+    padding: 10px 30px;
     border-radius: 999px;
   }
 
@@ -510,13 +507,13 @@ body {
   /* Giant check/results button */
   .check-button {
     font-size: 1.5rem;
-    padding: 20px 30px;
+    padding: 10px 30px;
     border-radius: 12px;
   }
 
   /* Puzzle metadata enlarged */
   .puzzle-meta {
-    padding: 40px 48px;
+    padding: 10px 48px;
     gap: 28px;
   }
 
