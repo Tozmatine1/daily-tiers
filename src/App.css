@@ -151,6 +151,8 @@ body {
   grid-template-columns: 120px minmax(0, 1fr);
   min-height: 80px;
   border-bottom: 1px solid #2a213a;
+  align-items: center;      /* center label + items vertically */
+  position: relative;       /* so stats can be absolutely positioned */
 }
 
 .tier-row:last-child {
@@ -158,6 +160,7 @@ body {
 }
 
 .tier-label {
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,7 +170,6 @@ body {
   font-size: 1.1rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
-
 /* Tier colors */
 
 .tier-s {
@@ -194,6 +196,11 @@ body {
 
 .tier-label-text {
   line-height: 1;
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
 }
 
 .tier-label-range {
@@ -203,7 +210,8 @@ body {
 }
 
 .tier-content {
-  padding: 8px 12px;
+  grid-column: 2;
+  padding: 4px 12px 8px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -351,7 +359,7 @@ body {
   }
 
   .app {
-    margin-bottom: 250px;
+    margin-bottom: 150px;
     padding: 0px 12px 0px;
   }
 
@@ -633,3 +641,24 @@ body {
 .results-close:hover {
   opacity: 1;
 }
+
+.tier-stats {
+  position: absolute;
+  top: 4px;                  /* tweak this for exact vertical taste */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  opacity: 1;
+  pointer-events: none;      /* so dragging items isn't blocked */
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+

@@ -67,13 +67,18 @@ function DroppableTier({ id, label, rangeText, items }: DroppableTierProps) {
         outlineOffset: -2,
       }}
     >
+      {/* 🔹 stats row spanning full width */}
+      {rangeText && <div className="tier-stats">{rangeText}</div>}
+
+      {/* left colored label */}
       <div className="tier-label">
         <div className="tier-label-text">{label}</div>
-        {rangeText && <div className="tier-label-range">{rangeText}</div>}
       </div>
+
+      {/* right content area */}
       <div className="tier-content">
         {items.length === 0 ? (
-          <div className="tier-empty">(Drop items here)</div>
+          <div className="tier-empty"></div>
         ) : (
           items.map((item) => (
             <DraggableItem key={item.id} id={item.id} name={item.name} />
