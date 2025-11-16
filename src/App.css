@@ -679,10 +679,24 @@ body {
   }
 
   #root {
-    padding-top: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .app {
-    padding-top: 8px !important;   /* tiny breathing room */
+    margin: 0 !important;
+    padding: 8px 12px 24px !important; /* small top padding so it's not glued to the edge */
+  }
+
+  /* If the header container still exists, hide it completely */
+  .app-header {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Make sure the first child in .app isn't adding its own top margin */
+  .app > *:first-child {
     margin-top: 0 !important;
-  }}
+  }
+}
