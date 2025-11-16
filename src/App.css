@@ -351,8 +351,7 @@ body {
   }
 
   .app {
-    margin-top: -10px;
-    padding: 0px 12px 16px;
+    padding: 0px 12px 0px;
   }
 
   .puzzle-meta {
