@@ -407,6 +407,16 @@ body {
     grid-template-columns: 80px minmax(0, 1fr);
   }
 
+  @media (max-width: 768px) {
+  body {
+    padding-top: 4px;
+  }
+
+  .app {
+    padding-top: 8px;
+  }
+}
+
   /* 🔹 Fix items pool for mobile */
 
   .items-list {
