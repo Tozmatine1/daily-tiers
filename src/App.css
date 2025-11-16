@@ -237,7 +237,7 @@ body {
   width: 100%;
   background: #000000e6;
   border-radius: 14px;
-  border: 1px solid #2a213a;
+  border: 1px solid #000000;
 }
 
 .items-hint {
@@ -457,6 +457,10 @@ body {
     font-size: 0.9rem;   /* adjust to taste */
     top: 2px;            /* optional: nudge up since the text is smaller */
   }
+
+  .items-pool {
+    padding: 0px 0px 0px;
+  }
 }
 
 /* Extra-small phones */
@@ -486,7 +490,7 @@ body {
   }
 
   .items-pool {
-    padding: 10px 12px 14px;
+    padding: 0px 0px 0px;
   }
 
   .item-chip {
