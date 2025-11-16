@@ -459,7 +459,7 @@ body {
   }
 
   .item-chip-wrapper {
-    margin: 2px 4px;   /* tiny inset so the glow isn't flush to the edges */
+    margin: 4px 6px;   /* tiny inset so the glow isn't flush to the edges */
   }
 }
 
