@@ -264,11 +264,6 @@ function App() {
                 ref={setPoolRef}
                 style={isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined}
               >
-                <h3>Items to place</h3>
-                <p className="items-hint">
-                  Drag items into the board above, or drag them back here to remove
-                  them.
-                </p>
                 <ul className="items-list">
   {puzzle.items
   .filter((item) => playerTiers[item.id] === "") // only items currently in the pool
