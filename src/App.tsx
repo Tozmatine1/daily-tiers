@@ -196,13 +196,6 @@ function App() {
   return (
     <div className="app">
       <div className="app-inner">
-        <header className="app-header">
-          <h1>Daily Tiers</h1>
-          <p className="subtitle">
-            Drag each item into the correct tier based on the stat.
-          </p>
-        </header>
-
         <main className="app-main">
           <section className="puzzle-meta">
             <div>
