@@ -702,7 +702,7 @@ body {
     line-height: 1.1 !important;
   }
   .tier-row {
-    min-height: 60px;      /* taller base row on mobile */
+    min-height: 100px;      /* taller base row on mobile */
     position: relative;     /* needed for absolute stats */
   }
 
