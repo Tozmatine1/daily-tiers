@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, type CSSProperties } from "react";
+import { useState, useEffect, useRef, type CSSProperties } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -130,6 +130,8 @@ function DroppableTier({
 function App() {
   const { puzzle, puzzleId } = getPuzzleForDate();
   const STORAGE_KEY = `dailyTiersAttempt_${puzzleId}`;
+  const poolScrollRef = useRef<HTMLUListElement | null>(null);
+
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -416,42 +418,80 @@ const [shuffledItemIds] = useState<string[]>(() => {
 
               {/* Item pool */}
               <div
-                className="items-pool"
-                ref={setPoolRef}
-                style={
-                  isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined
+  className="items-pool"
+  ref={setPoolRef}
+  style={
+    isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined
+  }
+>
+  <ul className="items-list" ref={poolScrollRef}>
+    {puzzle.items
+      .filter((item: PuzzleItem) => playerTiers[item.id] === "")
+      .map((item: PuzzleItem) => (
+        <li key={item.id} className="items-list-entry">
+          <DraggableItem
+            id={item.id}
+            name={item.name}
+            disabled={hasSubmitted}
+          />
+
+          {results && (
+            <div
+              className={
+                results[item.id]
+                  ? "item-result correct"
+                  : "item-result incorrect"
+              }
+            >
+              {item.name}{" "}
+              <span
+                className={
+                  results[item.id] ? "result-check" : "result-x"
                 }
               >
-                <ul className="items-list">
-                  {shuffledItemIds
-  .filter((id) => playerTiers[id] === "") // only items still in pool
-  .map((id) => {
-    const item = puzzle.items.find((i) => i.id === id)!;
-    return (
-      <li key={item.id} className="items-list-entry">
-        <DraggableItem
-          id={item.id}
-          name={item.name}
-          disabled={hasSubmitted}
-        />
+                {results[item.id] ? "✓" : "✗"}
+              </span>
+            </div>
+          )}
+        </li>
+      ))}
+  </ul>
 
-        {results && (
-          <div
-            className={
-              results[item.id] ? "item-result correct" : "item-result incorrect"
-            }
-          >
-            {item.name}{" "}
-            <span className={results[item.id] ? "result-check" : "result-x"}>
-              {results[item.id] ? "✓" : "✗"}
-            </span>
-          </div>
-        )}
-      </li>
-    );
-  })}
-                </ul>
-              </div>
+  {/* scroll knob / controls */}
+  <div className="pool-scroll-controls">
+    <button
+      type="button"
+      className="pool-scroll-button"
+      onClick={() =>
+        poolScrollRef.current?.scrollBy({
+          left: -160,
+          behavior: "smooth",
+        })
+      }
+      aria-label="Scroll items left"
+    >
+      ◀
+    </button>
+
+    <div className="pool-scroll-track">
+      <div className="pool-scroll-knob" />
+    </div>
+
+    <button
+      type="button"
+      className="pool-scroll-button"
+      onClick={() =>
+        poolScrollRef.current?.scrollBy({
+          left: 160,
+          behavior: "smooth",
+        })
+      }
+      aria-label="Scroll items right"
+    >
+      ▶
+    </button>
+  </div>
+</div>
 
               {/* Results modal */}
               {showResults && results && (
