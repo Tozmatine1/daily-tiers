@@ -460,7 +460,6 @@ body {
 
 @media (max-width: 480px) {
   .app {
-    margin-bottom:100px;
     padding: 0px 8px 0px;
   }
 
