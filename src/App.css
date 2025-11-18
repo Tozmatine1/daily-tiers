@@ -839,7 +839,7 @@ body {
 /* Hearts */
 .attempt-hearts {
   display: flex;
-  gap: 2px;
+  gap: 0px;
   padding-left: 0px;
 }
 
