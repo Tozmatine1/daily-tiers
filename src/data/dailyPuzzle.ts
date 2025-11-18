@@ -99,21 +99,25 @@ const DAILY_PUZZLES: Record<string, Puzzle> = {
     ],
   },
   items: [
-    // S – 2B+ spread
-    { id: "avatar",      name: "Avatar",                    value: 2_923_000_000, trueTier: "S" },
-    { id: "endgame",     name: "Avengers: Endgame",         value: 2_799_000_000, trueTier: "S" },
-    { id: "titanic",     name: "Titanic",                   value: 2_264_000_000, trueTier: "S" },
-    { id: "forceawakens",name: "Star Wars: The Force Awakens", value: 2_071_000_000, trueTier: "S" },
+    // S – 2B+
+    { id: "avatar",       name: "Avatar",                         value: 2_923_000_000, trueTier: "S" },
+    { id: "endgame",      name: "Avengers: Endgame",              value: 2_799_000_000, trueTier: "S" },
 
-    // A – mid/high 1.5–1.9B
-    { id: "infinitywar", name: "Avengers: Infinity War",    value: 2_048_000_000, trueTier: "S" },
-    { id: "jurassic",    name: "Jurassic World",            value: 1_671_000_000, trueTier: "A" },
-    { id: "lionking19",  name: "The Lion King (2019)",      value: 1_663_000_000, trueTier: "A" },
+    // A – 1.5–1.999B
+    { id: "titanic",      name: "Titanic",                        value: 1_950_000_000, trueTier: "A" },
+    { id: "forceawakens", name: "Star Wars: The Force Awakens",   value: 1_800_000_000, trueTier: "A" },
 
-    // B – within 1.0–1.49B, varied
-    { id: "frozen2",     name: "Frozen II",                 value: 1_450_000_000, trueTier: "B" },
-    { id: "fate",        name: "The Fate of the Furious",   value: 1_238_000_000, trueTier: "B" },
-    { id: "minions",     name: "Minions",                   value: 1_159_000_000, trueTier: "B" },
+    // B – 1.0–1.499B
+    { id: "infinitywar",  name: "Avengers: Infinity War",         value: 1_450_000_000, trueTier: "B" },
+    { id: "jurassic",     name: "Jurassic World",                 value: 1_238_000_000, trueTier: "B" },
+
+    // C – 800–999M
+    { id: "lionking19",   name: "The Lion King (2019)",           value: 950_000_000,   trueTier: "C" },
+    { id: "frozen2",      name: "Frozen II",                      value: 900_000_000,   trueTier: "C" },
+
+    // D – ≤799M
+    { id: "fate",         name: "The Fate of the Furious",        value: 780_000_000,   trueTier: "D" },
+    { id: "minions",      name: "Minions",                        value: 620_000_000,   trueTier: "D" },
   ],
 },
 
