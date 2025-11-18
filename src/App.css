@@ -812,30 +812,31 @@ body {
 
 
 .top-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 25% 50% 25%; /* left-center-right */
   align-items: center;
-  justify-content: center;
   width: 100%;
-  margin-bottom: 0px;
-  position: relative;
+  margin-bottom: 16px;
 }
 
-/* LEFT COLUMN */
+/* 25% left zone */
 .topbar-left {
-  flex: 1;
   display: flex;
   justify-content: flex-start;
+  padding-left: 8px; /* small padding tweak */
 }
 
-/* CENTER COLUMN */
+/* 50% center zone */
 .topbar-center {
   display: flex;
   justify-content: center;
 }
 
-/* RIGHT COLUMN */
+/* 25% right zone */
 .topbar-right {
-  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 8px;
 }
 
 /* Hearts */

@@ -537,7 +537,7 @@ const shuffledItems = useMemo(() => shuffleArray(puzzle.items), [puzzle.items]);
             onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
-            <section className="game-layout">
+              <section className="game-layout">
               <div className="top-bar">
   {/* LEFT: hearts */}
   <div className="topbar-left">
@@ -571,22 +571,22 @@ const shuffledItems = useMemo(() => shuffleArray(puzzle.items), [puzzle.items]);
     </button>
   </div>
 
+  {/* RIGHT: progress tracker */}
   <div className="topbar-right">
-  <div className="progress-tracker">
-    <span
-      className={
-        (lastAttemptCorrect ?? 0) === 0
-          ? "progress-zero"
-          : "progress-correct"
-      }
-    >
-      {lastAttemptCorrect ?? 0}
-    </span>
-    <span className="progress-total">/{puzzle.items.length}</span>
+    <div className="progress-tracker">
+      <span
+        className={
+          (lastAttemptCorrect ?? 0) === 0
+            ? "progress-zero"
+            : "progress-correct"
+        }
+      >
+        {lastAttemptCorrect ?? 0}
+      </span>
+      <span className="progress-total">/{puzzle.items.length}</span>
+    </div>
   </div>
 </div>
-
-              </div>
 
               <DragOverlay>
                 {activeDragId && (
