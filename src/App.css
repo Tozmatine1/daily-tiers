@@ -426,7 +426,7 @@ body {
   }
 
   .check-button {
-    width: 50%;
+    width: 60%;
     text-align: center;
     padding: 10px 12px;
   }
@@ -846,7 +846,7 @@ body {
 }
 
 .heart {
-  font-size: 40px;
+  font-size: 30px;
   line-height: 1;
 }
 
