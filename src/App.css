@@ -862,10 +862,10 @@ body {
 .progress-tracker {
   display: flex;
   align-items: center;
-  font-size: 25px;
+  font-size: 30px;
   gap: 3px;
   justify-content: flex-end;
-  padding-right: 12px;
+  padding-right: 15px;
 }
 
 /* progress when >0 */
