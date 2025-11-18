@@ -371,30 +371,28 @@ body {
 
 /* Mobile: main breakpoint */
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   body {
     padding-top: 0px;
     padding-bottom: 0px;
   }
 
   .app {
-    padding: 0px 0px 0px;
+    margin-bottom:120px;
+    padding: 0px 8px 0px;
   }
 
   .puzzle-meta {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
+    padding: 10px 12px;
+    gap: 6px;
   }
-
   .score-block {
     text-align: center;
     width: 100%;
   }
 
   .tier-row {
-    grid-template-columns: 80px minmax(0, 1fr);
+    grid-template-columns: 72px minmax(0, 1fr);
   }
 
   .items-list {
@@ -417,9 +415,8 @@ body {
   }
 
   .item-chip {
-    text-align: center;
-    font-size: 0.9rem;
-    padding: 2px 2px;
+    font-size: 0.85rem;
+    padding: 7px 8px;
   }
 
   .item-tier-buttons {
@@ -427,13 +424,12 @@ body {
   }
 
   .check-button {
-    width: 90%;
-    text-align: center;
-    padding: 10px 12px;
+    font-size: 0.85rem;
+    padding: 8px 10px;
   }
 
   .tier-label {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 4px 2px;
   }
 
@@ -447,59 +443,16 @@ body {
   }
 
   .tier-stats {
-    font-size: 0.9rem;   /* adjust to taste */
-    top: 2px;            /* optional: nudge up since the text is smaller */
+    font-size: 0.8rem;
   }
 
   .items-pool {
     padding: 0px 0px 0px;
-  }
-}
-
-/* Extra-small phones */
-
-@media (max-width: 480px) {
-  .app {
-    margin-bottom:120px;
-    padding: 0px 8px 0px;
-  }
-
-  .puzzle-meta {
-    padding: 10px 12px;
-    gap: 6px;
-  }
-
-  .tier-row {
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
-  .tier-label {
-    font-size: 0.9rem;
-    padding: 4px 2px;
   }
 
   .tier-label-range {
     font-size: 0.65rem;
   }
-
-  .items-pool {
-    padding: 0px 0px 0px;
-  }
-
-  .item-chip {
-    font-size: 0.85rem;
-    padding: 7px 8px;
-  }
-
-  .check-button {
-    font-size: 0.85rem;
-    padding: 8px 10px;
-  }
-
-.tier-stats {
-    font-size: 0.8rem;
-  }
-
 }
 
 @media (min-width: 900px) {
