@@ -809,3 +809,83 @@ body {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   cursor: grab;
 }
+
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0px;
+  position: relative;
+}
+
+/* LEFT COLUMN */
+.topbar-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* CENTER COLUMN */
+.topbar-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* RIGHT COLUMN */
+.topbar-right {
+  flex: 1;
+}
+
+/* Hearts */
+.attempt-hearts {
+  display: flex;
+  gap: 6px;
+  padding-left: 0px;
+}
+
+.heart {
+  font-size: 50px;
+  line-height: 1;
+}
+
+.heart-active {
+  color: #f97373;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+.heart-used {
+  color: #4b5563;
+  opacity: 0.6;
+}
+
+/* Right progress tracker */
+.progress-tracker {
+  display: flex;
+  align-items: center;
+  font-size: 35px;
+  gap: 3px;
+  justify-content: flex-end;
+  padding-right: 0px;
+}
+
+/* progress when >0 */
+.progress-correct {
+  color: #4ade80; /* green */
+  font-weight: bold;
+
+}
+
+/* progress when exactly 0 */
+.progress-zero {
+  color: white; /* or #f5f5f5 depending on your theme */
+  font-weight: bold;
+}
+
+/* the “/10” part */
+.progress-total {
+  color: #e5e7eb;
+  font-weight: bold;
+
+}

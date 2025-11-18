@@ -1,5 +1,13 @@
 import "./App.css";
-import { useState, useEffect, useRef, type CSSProperties, type MouseEvent, type PointerEvent as ReactPointerEvent} from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  type CSSProperties,
+  type MouseEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import {
   DndContext,
   DragOverlay,
@@ -10,7 +18,6 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-
 import { getPuzzleForDate } from "./data/dailyPuzzle";
 import type { PuzzleItem, TierDefinition } from "./types/puzzle";
 
@@ -22,6 +29,9 @@ function shuffleArray<T>(array: T[]): T[] {
   }
   return copy;
 }
+
+const MAX_ATTEMPTS = 3;
+
 
 // =====================
 // Draggable item chip
@@ -133,63 +143,63 @@ function App() {
 
   const poolScrollRef = useRef<HTMLUListElement | null>(null);
   const [poolScrollProgress, setPoolScrollProgress] = useState(0);
-  
-const [isDraggingKnob, setIsDraggingKnob] = useState(false);
-const trackRef = useRef<HTMLDivElement | null>(null);
-const knobDragStateRef = useRef<{
-  startX: number;
-  startScrollLeft: number;
-  trackWidth: number;
-} | null>(null);
 
-function updatePoolScrollProgress() {
-  const list = poolScrollRef.current;
-  if (!list) return;
+  const [isDraggingKnob, setIsDraggingKnob] = useState(false);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const knobDragStateRef = useRef<{
+    startX: number;
+    startScrollLeft: number;
+    trackWidth: number;
+  } | null>(null);
 
-  const maxScroll = list.scrollWidth - list.clientWidth;
-  if (maxScroll <= 0) {
-    setPoolScrollProgress(0);
-    return;
+  function updatePoolScrollProgress() {
+    const list = poolScrollRef.current;
+    if (!list) return;
+
+    const maxScroll = list.scrollWidth - list.clientWidth;
+    if (maxScroll <= 0) {
+      setPoolScrollProgress(0);
+      return;
+    }
+
+    setPoolScrollProgress(list.scrollLeft / maxScroll);
   }
 
-  setPoolScrollProgress(list.scrollLeft / maxScroll);
-}
+  function handlePoolScroll() {
+    updatePoolScrollProgress();
+  }
 
-function handlePoolScroll() {
-  updatePoolScrollProgress();
-}
+  function handlePoolTrackClick(e: MouseEvent<HTMLDivElement>) {
+    const track = e.currentTarget;
+    const rect = track.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const ratio = rect.width > 0 ? clickX / rect.width : 0;
 
-function handlePoolTrackClick(e: MouseEvent<HTMLDivElement>) {
-  const track = e.currentTarget;
-  const rect = track.getBoundingClientRect();
-  const clickX = e.clientX - rect.left;
-  const ratio = rect.width > 0 ? clickX / rect.width : 0;
+    const list = poolScrollRef.current;
+    if (!list) return;
 
-  const list = poolScrollRef.current;
-  if (!list) return;
+    const maxScroll = list.scrollWidth - list.clientWidth;
+    list.scrollTo({
+      left: maxScroll * ratio,
+      behavior: "smooth",
+    });
+  }
 
-  const maxScroll = list.scrollWidth - list.clientWidth;
-  list.scrollTo({
-    left: maxScroll * ratio,
-    behavior: "smooth",
-  });
-}
+  function handleKnobPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const list = poolScrollRef.current;
+    const track = trackRef.current;
+    if (!list || !track) return;
 
-function handleKnobPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
-  e.preventDefault();
-  const list = poolScrollRef.current;
-  const track = trackRef.current;
-  if (!list || !track) return;
+    const trackWidth = track.clientWidth;
+    knobDragStateRef.current = {
+      startX: e.clientX,
+      startScrollLeft: list.scrollLeft,
+      trackWidth,
+    };
 
-  const trackWidth = track.clientWidth;
-  knobDragStateRef.current = {
-    startX: e.clientX,
-    startScrollLeft: list.scrollLeft,
-    trackWidth,
-  };
-
-  setIsDraggingKnob(true);
-}
+    setIsDraggingKnob(true);
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -200,41 +210,42 @@ function handleKnobPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
   );
 
   useEffect(() => {
-  if (!isDraggingKnob) return;
+    if (!isDraggingKnob) return;
 
-  function onPointerMove(ev: PointerEvent) {
-    const list = poolScrollRef.current;
-    const dragState = knobDragStateRef.current;
-    if (!list || !dragState) return;
+    function onPointerMove(ev: PointerEvent) {
+      const list = poolScrollRef.current;
+      const dragState = knobDragStateRef.current;
+      if (!list || !dragState) return;
 
-    const { startX, startScrollLeft, trackWidth } = dragState;
-    const maxScroll = list.scrollWidth - list.clientWidth;
-    if (maxScroll <= 0 || trackWidth <= 0) return;
+      const { startX, startScrollLeft, trackWidth } = dragState;
+      const maxScroll = list.scrollWidth - list.clientWidth;
+      if (maxScroll <= 0 || trackWidth <= 0) return;
 
-    const deltaX = ev.clientX - startX;
-    const deltaProgress = deltaX / trackWidth;
-    let newScrollLeft = startScrollLeft + deltaProgress * maxScroll;
+      const deltaX = ev.clientX - startX;
+      const deltaProgress = deltaX / trackWidth;
+      let newScrollLeft = startScrollLeft + deltaProgress * maxScroll;
 
-    if (newScrollLeft < 0) newScrollLeft = 0;
-    if (newScrollLeft > maxScroll) newScrollLeft = maxScroll;
+      if (newScrollLeft < 0) newScrollLeft = 0;
+      if (newScrollLeft > maxScroll) newScrollLeft = maxScroll;
 
-    list.scrollTo({ left: newScrollLeft });
-    updatePoolScrollProgress();
-  }
+      list.scrollTo({ left: newScrollLeft });
+      updatePoolScrollProgress();
+    }
 
-  function onPointerUp() {
-    setIsDraggingKnob(false);
-    knobDragStateRef.current = null;
-  }
+    function onPointerUp() {
+      setIsDraggingKnob(false);
+      knobDragStateRef.current = null;
+    }
 
-  window.addEventListener("pointermove", onPointerMove);
-  window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
 
-  return () => {
-    window.removeEventListener("pointermove", onPointerMove);
-    window.removeEventListener("pointerup", onPointerUp);
-  };
-}, [isDraggingKnob]);
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, [isDraggingKnob]);
+
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
 
   const [showResults, setShowResults] = useState<boolean>(() => {
@@ -246,82 +257,94 @@ function handleKnobPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
 
       const stored = JSON.parse(raw) as {
         results?: Record<string, boolean>;
+        gameOver?: boolean;
       };
 
-      return !!stored.results;
+      return !!stored.results && !!stored.gameOver;
     } catch (err) {
       console.error("Failed to load showResults", err);
       return false;
     }
   });
 
+
   const { setNodeRef: setPoolRef, isOver: isOverPool } = useDroppable({
     id: "POOL",
   });
 
   // itemId -> chosen tier id ("S","A",... or "")
-const [playerTiers, setPlayerTiers] = useState<Record<string, string>>(() => {
-  const emptyPlayerTiers: Record<string, string> = Object.fromEntries(
-    puzzle.items.map((item: PuzzleItem) => [item.id, ""])
-  );
+  const [playerTiers, setPlayerTiers] = useState<Record<string, string>>(() => {
+    const emptyPlayerTiers: Record<string, string> = Object.fromEntries(
+      puzzle.items.map((item: PuzzleItem) => [item.id, ""])
+    );
 
-  if (typeof window === "undefined") {
-    return emptyPlayerTiers;
-  }
-
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return emptyPlayerTiers;
-
-    const stored = JSON.parse(raw) as {
-      playerTiers?: Record<string, string>;
-    };
-
-    return stored.playerTiers ?? emptyPlayerTiers;
-  } catch (err) {
-    console.error("Failed to load saved playerTiers", err);
-    return emptyPlayerTiers;
-  }
-});
-
-// 👉 MUST BE HERE (right after playerTiers)
-const [shuffledItemIds] = useState<string[]>(() => {
-  if (typeof window !== "undefined") {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const stored = JSON.parse(raw);
-      if (stored.shuffledItemIds) {
-        return stored.shuffledItemIds;
-      }
+    if (typeof window === "undefined") {
+      return emptyPlayerTiers;
     }
-  }
-
-  // Generate new shuffled order for first-time load today
-  const ids = puzzle.items.map((i: PuzzleItem) => i.id);
-  return shuffleArray(ids); 
-});
-
-  // itemId -> correct? after checking
-  const [results, setResults] = useState<Record<string, boolean> | null>(() => {
-    if (typeof window === "undefined") return null;
 
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
+      if (!raw) return emptyPlayerTiers;
 
       const stored = JSON.parse(raw) as {
-        results?: Record<string, boolean>;
+        playerTiers?: Record<string, string>;
       };
 
-      return stored.results ?? null;
+      return stored.playerTiers ?? emptyPlayerTiers;
     } catch (err) {
-      console.error("Failed to load saved results", err);
-      return null;
+      console.error("Failed to load saved playerTiers", err);
+      return emptyPlayerTiers;
     }
   });
 
+  // 🔀 Shuffled list of items, stable for this puzzleId
+const shuffledItems = useMemo(() => shuffleArray(puzzle.items), [puzzle.items]);
+
+  // how many full-board checks the player has used
+  const [attemptsUsed, setAttemptsUsed] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return 0;
+
+      const stored = JSON.parse(raw) as { attemptsUsed?: number };
+      return stored.attemptsUsed ?? 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  // feedback for last imperfect attempt
+  const [lastAttemptCorrect, setLastAttemptCorrect] = useState<number | null>(
+    null
+  );
+
+
+
+  // itemId -> correct? after checking
+  const [results, setResults] = useState<Record<string, boolean> | null>(
+    () => {
+      if (typeof window === "undefined") return null;
+
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+
+        const stored = JSON.parse(raw) as {
+          results?: Record<string, boolean>;
+        };
+
+        return stored.results ?? null;
+      } catch (err) {
+        console.error("Failed to load saved results", err);
+        return null;
+      }
+    }
+  );
+
   // track whether user already submitted
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>(() => {
+ const [hasSubmitted, setHasSubmitted] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
 
     try {
@@ -330,9 +353,10 @@ const [shuffledItemIds] = useState<string[]>(() => {
 
       const stored = JSON.parse(raw) as {
         results?: Record<string, boolean>;
+        gameOver?: boolean;
       };
 
-      return !!stored.results;
+      return !!stored.gameOver;
     } catch (err) {
       console.error("Failed to load hasSubmitted", err);
       return false;
@@ -360,7 +384,7 @@ const [shuffledItemIds] = useState<string[]>(() => {
   }, []);
 
   function checkAnswers() {
-    // If they've already submitted, just reopen the results modal
+    // If game is over, just reopen the results modal
     if (hasSubmitted) {
       if (results) {
         setShowResults(true);
@@ -368,7 +392,7 @@ const [shuffledItemIds] = useState<string[]>(() => {
       return;
     }
 
-    // First-time submission: require a complete board
+    // Require a complete board before checking
     if (!allAnswered) return;
 
     const scoreObject: Record<string, boolean> = {};
@@ -377,21 +401,53 @@ const [shuffledItemIds] = useState<string[]>(() => {
       scoreObject[item.id] = item.trueTier === chosen;
     });
 
-    setResults(scoreObject);
-    setShowResults(true);
-    setHasSubmitted(true);
+    const correctCount = Object.values(scoreObject).filter(Boolean).length;
+    const nextAttempts = attemptsUsed + 1;
+
+    // Perfect or out of attempts → GAME OVER
+    const isPerfect = correctCount === puzzle.items.length;
+    const noAttemptsLeft = nextAttempts >= MAX_ATTEMPTS;
+
+    if (isPerfect || noAttemptsLeft) {
+      setResults(scoreObject);
+      setShowResults(true);
+      setHasSubmitted(true);
+      setAttemptsUsed(nextAttempts);
+      setLastAttemptCorrect(correctCount);
+
+      try {
+        window.localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            playerTiers,
+            results: scoreObject,
+            attemptsUsed: nextAttempts,
+            gameOver: true,
+          })
+        );
+      } catch (err) {
+        console.error("Failed to save final attempt", err);
+      }
+
+      return;
+    }
+
+    // Imperfect attempt, still have tries left:
+    // tell them how many are correct, but let them rearrange.
+    setAttemptsUsed(nextAttempts);
+    setLastAttemptCorrect(correctCount);
 
     try {
       window.localStorage.setItem(
-  STORAGE_KEY,
-  JSON.stringify({
-    playerTiers,
-    results: scoreObject,
-    shuffledItemIds, // SAVE the order
-  })
-);
+        STORAGE_KEY,
+        JSON.stringify({
+          playerTiers,
+          attemptsUsed: nextAttempts,
+          // no results, no gameOver yet
+        })
+      );
     } catch (err) {
-      console.error("Failed to save attempt", err);
+      console.error("Failed to save partial attempt", err);
     }
   }
 
@@ -446,6 +502,25 @@ const [shuffledItemIds] = useState<string[]>(() => {
     return "";
   }
 
+  const totalItems = puzzle.items.length;
+
+  // Was the game ended because of a perfect run?
+  const isPerfectGameOver =
+    hasSubmitted && lastAttemptCorrect === totalItems;
+
+  // Hearts should gray only on *failed* attempts
+  let failedAttempts = attemptsUsed;
+
+  if (isPerfectGameOver) {
+    // Don’t count the winning attempt as a "lost heart"
+    failedAttempts = Math.max(0, attemptsUsed - 1);
+  }
+
+  if (failedAttempts > MAX_ATTEMPTS) {
+    failedAttempts = MAX_ATTEMPTS;
+  }
+
+
   return (
     <div className="app">
       <div className="app-inner">
@@ -464,17 +539,53 @@ const [shuffledItemIds] = useState<string[]>(() => {
           >
             <section className="game-layout">
               <div className="top-bar">
-                <button
-                  onClick={checkAnswers}
-                  disabled={!allAnswered && !hasSubmitted}
-                  className="check-button"
-                >
-                  {hasSubmitted
-                    ? "View Results"
-                    : allAnswered
-                    ? "Check Answers"
-                    : "Complete the Tier List"}
-                </button>
+  {/* LEFT: hearts */}
+  <div className="topbar-left">
+    <div className="attempt-hearts">
+      {Array.from({ length: MAX_ATTEMPTS }).map((_, idx) => {
+        const used = idx < failedAttempts;
+        return (
+          <span
+            key={idx}
+            className={`heart ${used ? "heart-used" : "heart-active"}`}
+          >
+            ♥
+          </span>
+        );
+      })}
+    </div>
+  </div>
+
+  {/* CENTER: button */}
+  <div className="topbar-center">
+    <button
+      onClick={checkAnswers}
+      disabled={!allAnswered && !hasSubmitted}
+      className="check-button"
+    >
+      {hasSubmitted
+        ? "View Results"
+        : allAnswered
+        ? "Check Answers"
+        : "Complete the Tier List"}
+    </button>
+  </div>
+
+  <div className="topbar-right">
+  <div className="progress-tracker">
+    <span
+      className={
+        (lastAttemptCorrect ?? 0) === 0
+          ? "progress-zero"
+          : "progress-correct"
+      }
+    >
+      {lastAttemptCorrect ?? 0}
+    </span>
+    <span className="progress-total">/{puzzle.items.length}</span>
+  </div>
+</div>
+
               </div>
 
               <DragOverlay>
@@ -512,85 +623,97 @@ const [shuffledItemIds] = useState<string[]>(() => {
 
               {/* Item pool */}
               <div
-  className="items-pool"
-  ref={setPoolRef}
-  style={isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined}
->
-  <ul
-    className="items-list"
-    ref={poolScrollRef}
-    onScroll={handlePoolScroll}
-  >
-    {puzzle.items
-      .filter((item: PuzzleItem) => playerTiers[item.id] === "")
-      .map((item: PuzzleItem) => (
-        <li key={item.id} className="items-list-entry">
-          <DraggableItem
-            id={item.id}
-            name={item.name}
-            disabled={hasSubmitted}
-          />
-
-          {results && (
-            <div
-              className={
-                results[item.id]
-                  ? "item-result correct"
-                  : "item-result incorrect"
-              }
-            >
-              {item.name}{" "}
-              <span
-                className={
-                  results[item.id] ? "result-check" : "result-x"
+                className="items-pool"
+                ref={setPoolRef}
+                style={
+                  isOverPool ? { boxShadow: "0 0 0 2px #7c5fba" } : undefined
                 }
               >
-                {results[item.id] ? "✓" : "✗"}
-              </span>
-            </div>
-          )}
-        </li>
-      ))}
-  </ul>
+                <ul
+                  className="items-list"
+                  ref={poolScrollRef}
+                  onScroll={handlePoolScroll}
+                >
+                  {shuffledItems
+                    .filter(
+                      (item: PuzzleItem) => playerTiers[item.id] === ""
+                    )
+                    .map((item: PuzzleItem) => (
+                      <li key={item.id} className="items-list-entry">
+                        <DraggableItem
+                          id={item.id}
+                          name={item.name}
+                          disabled={hasSubmitted}
+                        />
 
-  <div className="pool-scroll-controls">
-    <button
-      type="button"
-      className="pool-scroll-button"
-      onClick={() =>
-        poolScrollRef.current?.scrollBy({ left: -160, behavior: "smooth" })
-      }
-      aria-label="Scroll items left"
-    >
-      ◀
-    </button>
+                        {results && (
+                          <div
+                            className={
+                              results[item.id]
+                                ? "item-result correct"
+                                : "item-result incorrect"
+                            }
+                          >
+                            {item.name}{" "}
+                            <span
+                              className={
+                                results[item.id]
+                                  ? "result-check"
+                                  : "result-x"
+                              }
+                            >
+                              {results[item.id] ? "✓" : "✗"}
+                            </span>
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                </ul>
 
-    <div
-      className="pool-scroll-track"
-      ref={trackRef}
-      onClick={handlePoolTrackClick}
-    >
-      <div
-        className="pool-scroll-knob"
-        onPointerDown={handleKnobPointerDown}
-        style={{
-          left: `${poolScrollProgress * 75}%`, // knob travels across ~75% of track
-        }}
-      />
-    </div>
+                <div className="pool-scroll-controls">
+                  <button
+                    type="button"
+                    className="pool-scroll-button"
+                    onClick={() =>
+                      poolScrollRef.current?.scrollBy({
+                        left: -160,
+                        behavior: "smooth",
+                      })
+                    }
+                    aria-label="Scroll items left"
+                  >
+                    ◀
+                  </button>
 
-    <button
-      type="button"
-      className="pool-scroll-button"
-      onClick={() =>
-        poolScrollRef.current?.scrollBy({ left: 160, behavior: "smooth" })
-      }
-      aria-label="Scroll items right"
-    >
-      ▶
-    </button>
-  </div>
-</div>
+                  <div
+                    className="pool-scroll-track"
+                    ref={trackRef}
+                    onClick={handlePoolTrackClick}
+                  >
+                    <div
+                      className="pool-scroll-knob"
+                      onPointerDown={handleKnobPointerDown}
+                      style={{
+                        left: `${poolScrollProgress * 75}%`, // knob travels across ~75% of track
+                      }}
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    className="pool-scroll-button"
+                    onClick={() =>
+                      poolScrollRef.current?.scrollBy({
+                        left: 160,
+                        behavior: "smooth",
+                      })
+                    }
+                    aria-label="Scroll items right"
+                  >
+                    ▶
+                  </button>
+                </div>
+              </div>
 
               {/* Results modal */}
               {showResults && results && (
@@ -615,36 +738,42 @@ const [shuffledItemIds] = useState<string[]>(() => {
                     </p>
 
                     <div className="results-tiers">
-                      {puzzle.category.tiers.map((tier: TierDefinition) => {
-                        const tierItems = puzzle.items.filter(
-                          (item: PuzzleItem) => item.trueTier === tier.id
-                        );
+                      {puzzle.category.tiers.map(
+                        (tier: TierDefinition) => {
+                          const tierItems = puzzle.items.filter(
+                            (item: PuzzleItem) => item.trueTier === tier.id
+                          );
 
-                        return (
-                          <div
-                            key={tier.id}
-                            className="results-tier-block"
-                          >
-                            <h4>{tier.id} Tier</h4>
-                            <ul>
-                              {tierItems.map((item: PuzzleItem) => (
-                                <li key={item.id}>
-                                  {item.name}{" "}
-                                  <span
-                                    className={
-                                      results[item.id]
-                                        ? "result-check"
-                                        : "result-x"
-                                    }
-                                  >
-                                    {results[item.id] ? "✓" : "✗"}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        );
-                      })}
+                          return (
+                            <div
+                              key={tier.id}
+                              className="results-tier-block"
+                            >
+                              <h4>{tier.id} Tier</h4>
+                              <ul>
+                                {tierItems.map(
+                                  (item: PuzzleItem) => (
+                                    <li key={item.id}>
+                                      {item.name}{" "}
+                                      <span
+                                        className={
+                                          results[item.id]
+                                            ? "result-check"
+                                            : "result-x"
+                                        }
+                                      >
+                                        {results[item.id]
+                                          ? "✓"
+                                          : "✗"}
+                                      </span>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          );
+                        }
+                      )}
                     </div>
                   </div>
                 </div>
