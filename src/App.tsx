@@ -734,8 +734,16 @@ const shuffledItems = useMemo(() => shuffleArray(puzzle.items), [puzzle.items]);
 
                     <h3>Results</h3>
                     <p>
-                      You got {totalCorrect} / {puzzle.items.length} correct.
-                    </p>
+  You got{" "}
+  <span
+    className={
+      totalCorrect === 0 ? "progress-zero" : "progress-correct"
+    }
+  >
+    {totalCorrect}
+  </span>
+  {" "} / {puzzle.items.length} correct.
+</p>
 
                     <div className="results-tiers">
                       {puzzle.category.tiers.map(
