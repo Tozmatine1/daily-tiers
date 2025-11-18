@@ -841,7 +841,7 @@ body {
 /* Hearts */
 .attempt-hearts {
   display: flex;
-  gap: 6px;
+  gap: 2px;
   padding-left: 0px;
 }
 
