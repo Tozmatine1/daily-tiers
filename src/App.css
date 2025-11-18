@@ -458,49 +458,6 @@ body {
 
 /* Extra-small phones */
 
-@media (max-width: 480px) {
-  .app {
-    padding: 0px 8px 0px;
-  }
-
-  .puzzle-meta {
-    padding: 10px 12px;
-    gap: 6px;
-  }
-
-  .tier-row {
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
-  .tier-label {
-    font-size: 0.9rem;
-    padding: 4px 2px;
-  }
-
-  .tier-label-range {
-    font-size: 0.65rem;
-  }
-
-  .items-pool {
-    padding: 0px 0px 0px;
-  }
-
-  .item-chip {
-    font-size: 0.85rem;
-    padding: 7px 8px;
-  }
-
-  .check-button {
-    font-size: 0.85rem;
-    padding: 8px 10px;
-  }
-
-.tier-stats {
-    font-size: 0.8rem;
-  }
-
-}
-
 @media (min-width: 900px) {
   .app {
     max-width: 1600px;        /* 16:9-friendly wide layout */
