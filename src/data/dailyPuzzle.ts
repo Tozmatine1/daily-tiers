@@ -85,39 +85,6 @@ const DAILY_PUZZLES: Record<string, Puzzle> = {
 },
 
 "2025-11-18": {
-  id: "2025-11-18",
-  category: {
-    id: "mlb-career-hr",
-    name: "MLB Career Home Runs",
-    units: "HR",
-    tiers: [
-      { id: "S", label: "S", minValue: 600, maxValue: null },
-      { id: "A", label: "A", minValue: 500, maxValue: 599 },
-      { id: "B", label: "B", minValue: 400, maxValue: 499 },
-      { id: "C", label: "C", minValue: 300, maxValue: 399 },
-      { id: "D", label: "D", minValue: null, maxValue: 299 },
-    ],
-  },
-  items: [
-    // S – from low 600s up through 760+
-    { id: "bonds",   name: "Barry Bonds",       value: 762, trueTier: "S" },
-    { id: "aaron",   name: "Hank Aaron",        value: 755, trueTier: "S" },
-    { id: "ruth",    name: "Babe Ruth",         value: 714, trueTier: "S" },
-    { id: "pujols",  name: "Albert Pujols",     value: 703, trueTier: "S" },
-    { id: "thome",   name: "Jim Thome",         value: 612, trueTier: "S" },
-
-    // A – good spread in 500s
-    { id: "mantle",  name: "Mickey Mantle",     value: 536, trueTier: "A" },
-    { id: "foxx",    name: "Jimmie Foxx",       value: 534, trueTier: "A" },
-    { id: "manny",   name: "Manny Ramirez",     value: 555, trueTier: "A" },
-
-    // B – upper and lower part of 400s
-    { id: "sheffield",name: "Gary Sheffield",   value: 509, trueTier: "A" },
-    { id: "mcgriff", name: "Fred McGriff",      value: 493, trueTier: "B" },
-  ],
-},
-
-"2025-11-19": {
   id: "2025-11-19",
   category: {
     id: "movie-box-office",
@@ -147,6 +114,39 @@ const DAILY_PUZZLES: Record<string, Puzzle> = {
     { id: "frozen2",     name: "Frozen II",                 value: 1_450_000_000, trueTier: "B" },
     { id: "fate",        name: "The Fate of the Furious",   value: 1_238_000_000, trueTier: "B" },
     { id: "minions",     name: "Minions",                   value: 1_159_000_000, trueTier: "B" },
+  ],
+},
+
+"2025-11-19": {
+  id: "2025-11-18",
+  category: {
+    id: "mlb-career-hr",
+    name: "MLB Career Home Runs",
+    units: "HR",
+    tiers: [
+      { id: "S", label: "S", minValue: 600, maxValue: null },
+      { id: "A", label: "A", minValue: 500, maxValue: 599 },
+      { id: "B", label: "B", minValue: 400, maxValue: 499 },
+      { id: "C", label: "C", minValue: 300, maxValue: 399 },
+      { id: "D", label: "D", minValue: null, maxValue: 299 },
+    ],
+  },
+  items: [
+    // S – from low 600s up through 760+
+    { id: "bonds",   name: "Barry Bonds",       value: 762, trueTier: "S" },
+    { id: "aaron",   name: "Hank Aaron",        value: 755, trueTier: "S" },
+    { id: "ruth",    name: "Babe Ruth",         value: 714, trueTier: "S" },
+    { id: "pujols",  name: "Albert Pujols",     value: 703, trueTier: "S" },
+    { id: "thome",   name: "Jim Thome",         value: 612, trueTier: "S" },
+
+    // A – good spread in 500s
+    { id: "mantle",  name: "Mickey Mantle",     value: 536, trueTier: "A" },
+    { id: "foxx",    name: "Jimmie Foxx",       value: 534, trueTier: "A" },
+    { id: "manny",   name: "Manny Ramirez",     value: 555, trueTier: "A" },
+
+    // B – upper and lower part of 400s
+    { id: "sheffield",name: "Gary Sheffield",   value: 509, trueTier: "A" },
+    { id: "mcgriff", name: "Fred McGriff",      value: 493, trueTier: "B" },
   ],
 },
 
