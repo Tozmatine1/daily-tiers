@@ -865,7 +865,7 @@ body {
   font-size: 25px;
   gap: 3px;
   justify-content: flex-end;
-  padding-right: 0px;
+  padding-right: 6px;
 }
 
 /* progress when >0 */
