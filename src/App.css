@@ -30,8 +30,7 @@ body {
   color: #f5f5f5;
 }
 
-/* Base app width */
-
+/* Base app width for laptops / small desktop */
 .app {
   width: 100%;
   max-width: 960px;
@@ -67,7 +66,7 @@ body {
 }
 
 .puzzle-meta h2 {
-  margin: 0 0 0px 0;
+  margin: 0 0 4px 0;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -86,6 +85,25 @@ body {
   font-weight: 600;
 }
 
+.units {
+  margin: 0;
+  color: #000000;
+  font-size: 0.85rem;
+}
+
+.score-block {
+  text-align: right;
+}
+
+.score-text {
+  font-weight: 600;
+}
+
+.score-feedback {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
 /* Layout */
 
 .game-layout {
@@ -95,32 +113,12 @@ body {
   align-items: stretch;
 }
 
-/* === TOP BAR: hearts (left) / button (center) / progress (right) === */
-
 .top-bar {
-  display: grid;
-  grid-template-columns: 25% 50% 25%; /* left-center-right */
-  align-items: center;
   width: 100%;
-  margin-bottom: 0px;
-}
-
-.topbar-left {
+  max-width: 960px;
   display: flex;
-  justify-content: center; /* hearts centered in left 25% */
+  justify-content: center;
 }
-
-.topbar-center {
-  display: flex;
-  justify-content: center; /* button centered in middle 50% */
-}
-
-.topbar-right {
-  display: flex;
-  justify-content: center; /* progress centered in right 25% */
-}
-
-/* Button */
 
 .check-button {
   padding: 8px 14px;
@@ -138,53 +136,7 @@ body {
   cursor: not-allowed;
 }
 
-/* Hearts */
-
-.attempt-hearts {
-  display: flex;
-  gap: 2px;
-}
-
-.heart {
-  font-size: 30px;
-  line-height: 1;
-}
-
-.heart-active {
-  color: #f97373;
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
-}
-
-.heart-used {
-  color: #4b5563;
-  opacity: 0.6;
-}
-
-/* Right progress tracker */
-
-.progress-tracker {
-  display: flex;
-  align-items: center;
-  font-size: 25px;
-  gap: 3px;
-}
-
-.progress-correct {
-  color: #4ade80; /* green */
-  font-weight: bold;
-}
-
-.progress-zero {
-  color: white;
-  font-weight: bold;
-}
-
-.progress-total {
-  color: #e5e7eb;
-  font-weight: bold;
-}
-
-/* Tier board */
+/* TierMaker-style board */
 
 .tier-board {
   width: 100%;
@@ -200,8 +152,8 @@ body {
   grid-template-columns: 120px minmax(0, 1fr);
   min-height: 80px;
   border-bottom: 1px solid #000000;
-  align-items: center;
-  position: relative; /* for .tier-stats */
+  align-items: center;      /* center label + items vertically */
+  position: relative;       /* so stats can be absolutely positioned */
 }
 
 .tier-row:last-child {
@@ -219,7 +171,6 @@ body {
   font-size: 1.1rem;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
-
 /* Tier colors */
 
 .tier-s {
@@ -253,6 +204,12 @@ body {
      1px  1px 0 #000;
 }
 
+.tier-label-range {
+  font-size: 0.7rem;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+
 .tier-content {
   grid-column: 2;
   padding: 4px 12px 8px;
@@ -267,25 +224,12 @@ body {
   opacity: 0.6;
 }
 
-/* Tier range stats (top center of row) */
-
-.tier-stats {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  text-align: center;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin: 0;
-  opacity: 1;
-  pointer-events: none;
-  text-shadow:
-    -1px -1px 0 #000,
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000;
+.tier-item-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #000000;
+  font-size: 0.8rem;
 }
 
 /* Items pool */
@@ -295,6 +239,12 @@ body {
   background: #000000e6;
   border-radius: 14px;
   border: 1px solid #ffffff;
+}
+
+.items-hint {
+  margin: 4px 0 10px;
+  font-size: 0.85rem;
+  color: #ffffff;
 }
 
 .items-list {
@@ -309,23 +259,17 @@ body {
 }
 
 .items-list-entry {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  max-width: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  flex: 0 0 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Item chips */
-
 .item-chip {
   -webkit-user-select: none;
-  user-select: none;
   overflow: visible;
-  display: inline-flex !important;
+  text-overflow: initial;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   background: #000000;
@@ -333,9 +277,29 @@ body {
   padding: 6px 10px;
   border: 1px solid #ffffff;
   font-size: 0.95rem;
-  white-space: nowrap !important;
-  text-align: center !important;
+  user-select: none;
+  white-space: nowrap;
   position: relative;
+}
+
+.item-drag-handle {
+  cursor: grab;
+  border: none;
+  background: transparent;
+  padding: 0 4px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #000000;
+  touch-action: none; /* IMPORTANT for mobile dragging */
+}
+
+.item-drag-handle:active {
+  cursor: grabbing;
+}
+
+.item-chip-placed {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .item-chip-label {
@@ -343,17 +307,437 @@ body {
   text-overflow: ellipsis;
 }
 
-/* Drag overlay (handle over chip) */
+.item-chip-overlay {
+  position: fixed;
+  z-index: 999999;
+  pointer-events: none;
+}
 
-.item-drag-overlay {
-  position: absolute;
+.item-chip-wrapper {
+  display: block;
+}
+
+.item-chip-wrapper-active .item-chip {
+  box-shadow: inset 0 0 0 2px #000000;
+}
+
+.item-tier-buttons {
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.tier-btn {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #000000;
+  background: #000000;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.tier-btn-active {
+  background: #000000;
+  border-color: #000000;
+}
+
+.item-selected {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.item-result {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.item-result.correct {
+  color: #6fe96f;
+}
+
+.item-result.incorrect {
+  color: #ff6b6b;
+}
+
+.item-placed .item-chip {
+  opacity: 0.5;
+}
+
+/* Mobile: main breakpoint */
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .app {
+    padding: 0px 12px 0px;
+  }
+
+  .puzzle-meta {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .score-block {
+    text-align: center;
+    width: 100%;
+  }
+
+  .tier-row {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+
+  .items-list {
+    margin: 0;
+    padding: 8px 4px 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .items-list-entry {
+    flex: 0 0 70%;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item-chip {
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 2px 2px;
+  }
+
+  .item-tier-buttons {
+    justify-content: center;
+  }
+
+  .check-button {
+    width: 60%;
+    text-align: center;
+    padding: 10px 12px;
+  }
+
+  .tier-label {
+    font-size: 0.95rem;
+    padding: 4px 2px;
+  }
+
+  .tier-content {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .item-chip-wrapper {
+    margin: 1px 2px;
+  }
+
+  .tier-stats {
+    font-size: 0.9rem;   /* adjust to taste */
+    top: 2px;            /* optional: nudge up since the text is smaller */
+  }
+
+  .items-pool {
+    padding: 0px 0px 0px;
+  }
+}
+
+/* Extra-small phones */
+
+@media (max-width: 480px) {
+  .app {
+    margin-bottom:100px;
+    padding: 0px 8px 0px;
+  }
+
+  .puzzle-meta {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .tier-row {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .tier-label {
+    font-size: 0.9rem;
+    padding: 4px 2px;
+  }
+
+  .tier-label-range {
+    font-size: 0.65rem;
+  }
+
+  .items-pool {
+    padding: 0px 0px 0px;
+  }
+
+  .item-chip {
+    font-size: 0.85rem;
+    padding: 7px 8px;
+  }
+
+  .check-button {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+
+.tier-stats {
+    font-size: 0.8rem;
+  }
+
+}
+
+@media (min-width: 900px) {
+  .app {
+    max-width: 1600px;        /* 16:9-friendly wide layout */
+    padding: 30px 40px;       /* very large desktop spacing */
+  }
+
+  /* Double global text scale */
+  body {
+    font-size: 22px;          /* full 100% bump */
+  }
+
+  /* Tiers are BIG now */
+  .tier-row {
+    min-height: 160px;        /* doubled from ~80px */
+  }
+
+.items-pool {
+    padding: 0px 0px 0px;
+  }
+
+  /* Giant tier label bars */
+  .tier-label {
+    font-size: 2rem;
+    padding: 20px 10px;
+  }
+
+  /* Tier content big and roomy */
+  .tier-content {
+    padding: 20px 28px;
+    gap: 16px;
+  }
+
+  /* Item pills giant */
+  .item-chip {
+    font-size: 1.5rem;        /* double sizing */
+    padding: 0px 15px;
+    border-radius: 999px;
+  }
+
+  /* Tier selection buttons much bigger */
+  .tier-btn {
+    font-size: 1.2rem;
+    padding: 14px 18px;
+    border-radius: 8px;
+  }
+
+  /* Giant check/results button */
+  .check-button {
+    font-size: 1.5rem;
+    padding: 10px 30px;
+    border-radius: 12px;
+  }
+
+  /* Puzzle metadata enlarged */
+  .puzzle-meta {
+    padding: 10px 48px;
+    gap: 28px;
+  }
+
+  .puzzle-meta h2 {
+    font-size: 1.6rem;
+  }
+
+  .category-name {
+    font-size: 2rem;
+  }
+
+  /* Results modal enlarged */
+  .results-modal {
+    max-width: 800px;
+    padding: 40px 48px;
+  }
+}
+
+
+/* Results panel & modal */
+
+.results-panel {
+  margin-top: 16px;
+  background: #000000e6;
+  border-radius: 14px;
+  border: 1px solid #000000;
+  padding: 16px 18px 20px;
+}
+
+.results-panel h3 {
+  margin: 0 0 6px;
+}
+
+.results-panel p {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+.results-tiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.results-tier-block {
+  flex: 1 1 150px;
+  min-width: 150px;
+}
+
+.results-tier-block h4 {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+}
+
+.results-tier-block ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.results-tier-block li {
+  margin-bottom: 2px;
+}
+
+.results-backdrop {
+  position: fixed;
   inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.results-modal {
+  position: relative;
+  background: #000000e6;
+  border-radius: 16px;
+  border: 1px solid #000000;
+  padding: 20px 22px 22px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+}
+
+.results-modal h3 {
+  margin: 0 0 8px;
+}
+
+.results-modal p {
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.results-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
   background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.results-close:hover {
+  opacity: 1;
+}
+
+.tier-stats {
+  position: absolute;
+  top: 4px;                  /* tweak this for exact vertical taste */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  opacity: 1;
+  pointer-events: none;      /* so dragging items isn't blocked */
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+@media (max-width: 768px) {
+  .tier-row .tier-stats {
+    font-size: 0.8rem !important;
+    line-height: 1.1 !important;
+  }
+  .tier-row {
+    min-height: 80px;      /* taller base row on mobile */
+    position: relative;     /* needed for absolute stats */
+  }
+
+  .tier-content {
+    padding-top: 28px;      /* leave room under the stats line */
+    align-items: flex-start;
+  }
+
+  .tier-stats {
+    top: 4px;               /* keep it snug at the top */
+  }
+}
+  .items-list-entry {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .item-chip {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: none !important;   /* you can adjust this number */
+    padding: 4px 8px !important;   /* small, clean pill shape */
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  .item-drag-overlay {
+  position: absolute;
+  inset: 0;                 /* covers entire chip */
+  background: transparent;  /* invisible */
   border: none;
   padding: 0;
   margin: 0;
   cursor: grab;
-  touch-action: none;
+  touch-action: none;       /* required for mobile dragging */
 }
 
 .item-drag-overlay:active {
@@ -368,35 +752,17 @@ body {
   cursor: default !important;
 }
 
-/* Results per item */
-
-.item-result {
-  margin-top: 0px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.item-result.correct {
-  color: #6fe96f;
-}
-
-.item-result.incorrect {
-  color: #ff6b6b;
-}
-
-/* Check/X styling */
-
+/* Green checkmark */
 .result-check {
-  color: #22c55e !important;
+  color: #22c55e !important;   /* bright green */
   font-weight: bold;
 }
 
+/* Red X */
 .result-x {
-  color: #ef4444 !important;
+  color: #ef4444 !important;   /* bright red */
   font-weight: bold;
 }
-
-/* Pool scroll controls */
 
 .pool-scroll-controls {
   display: flex;
@@ -404,7 +770,7 @@ body {
   justify-content: center;
   gap: 10px;
   margin-top: 0px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 
 .pool-scroll-button {
@@ -444,227 +810,82 @@ body {
   cursor: grab;
 }
 
-/* Results modal */
 
-.results-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+.top-bar {
+  display: grid;
+  grid-template-columns: 25% 50% 25%; /* left-center-right */
+  align-items: center;
+  width: 100%;
+}
+
+/* 25% left zone */
+.topbar-left {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 8px; /* small padding tweak */
+}
+
+/* 50% center zone */
+.topbar-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* 25% right zone */
+.topbar-right {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+
+/* Hearts */
+.attempt-hearts {
+  display: flex;
+  gap: 2px;
+  padding-left: 0px;
+}
+
+.heart {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.heart-active {
+  color: #f97373;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+}
+
+.heart-used {
+  color: #4b5563;
+  opacity: 0.6;
+}
+
+/* Right progress tracker */
+.progress-tracker {
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 9999;
+  font-size: 25px;
+  gap: 3px;
+  justify-content: flex-end;
+  padding-right: 0px;
 }
 
-.results-modal {
-  position: relative;
-  background: #000000e6;
-  border-radius: 16px;
-  border: 1px solid #000000;
-  padding: 20px 22px 22px;
-  max-width: 520px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+/* progress when >0 */
+.progress-correct {
+  color: #4ade80; /* green */
+  font-weight: bold;
+
 }
 
-.results-modal h3 {
-  margin: 0 0 0px;
+/* progress when exactly 0 */
+.progress-zero {
+  color: white; /* or #f5f5f5 depending on your theme */
+  font-weight: bold;
 }
 
-.results-modal p {
-  margin: 0 0 0px;
-  font-weight: 600;
-}
+/* the “/10” part */
+.progress-total {
+  color: #e5e7eb;
+  font-weight: bold;
 
-.results-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1.4rem;
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.results-close:hover {
-  opacity: 1;
-}
-
-.results-tiers {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 0.9rem;
-}
-
-.results-tier-block {
-  flex: 1 1 150px;
-  min-width: 150px;
-}
-
-.results-tier-block h4 {
-  margin: 0 0 0px;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #ffffff;
-}
-
-.results-tier-block ul {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-}
-
-.results-tier-block li {
-  margin-bottom: 0;
-}
-
-/* ========================
-   Responsive styles
-   ======================== */
-
-@media (max-width: 768px) {
-  body {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .app {
-    padding: 0 12px 0;
-  }
-
-  .puzzle-meta {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-  }
-
-  .tier-row {
-    grid-template-columns: 80px minmax(0, 1fr);
-    min-height: 80px;
-  }
-
-  .items-list {
-    margin: 0;
-    padding: 8px 4px 12px;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .item-chip {
-    font-size: 0.9rem;
-    padding: 2px 2px;
-  }
-
-  .check-button {
-    width: 60%;
-    text-align: center;
-    padding: 10px 12px;
-  }
-
-  .tier-label {
-    font-size: 0.95rem;
-    padding: 4px 2px;
-  }
-
-  .tier-content {
-    padding: 6px 8px;
-    gap: 4px;
-  }
-
-  .tier-row .tier-stats {
-    font-size: 0.8rem !important;
-    line-height: 1.1 !important;
-    top: 4px;
-  }
-}
-
-@media (max-width: 480px) {
-  .app {
-    margin-bottom: 0px;
-    padding: 0 8px 0;
-  }
-
-  .puzzle-meta {
-    padding: 10px 12px;
-    gap: 6px;
-  }
-
-  .tier-row {
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
-  .tier-label {
-    font-size: 0.9rem;
-    padding: 4px 2px;
-  }
-
-  .item-chip {
-    font-size: 0.85rem;
-    padding: 7px 8px;
-  }
-
-  .check-button {
-    font-size: 0.85rem;
-    padding: 8px 10px;
-  }
-}
-
-@media (min-width: 900px) {
-  .app {
-    max-width: 1600px;
-    padding: 30px 40px;
-  }
-
-  body {
-    font-size: 22px;
-  }
-
-  .tier-row {
-    min-height: 160px;
-  }
-
-  .tier-label {
-    font-size: 2rem;
-    padding: 20px 10px;
-  }
-
-  .tier-content {
-    padding: 20px 28px;
-    gap: 16px;
-  }
-
-  .item-chip {
-    font-size: 1.5rem;
-    padding: 0 15px;
-  }
-
-  .check-button {
-    font-size: 1.5rem;
-    padding: 10px 30px;
-    border-radius: 12px;
-  }
-
-  .puzzle-meta {
-    padding: 10px 48px;
-    gap: 28px;
-  }
-
-  .puzzle-meta h2 {
-    font-size: 1.6rem;
-  }
-
-  .category-name {
-    font-size: 2rem;
-  }
-
-  .results-modal {
-    max-width: 800px;
-    padding: 40px 48px;
-  }
 }
