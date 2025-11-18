@@ -864,7 +864,7 @@ body {
 .progress-tracker {
   display: flex;
   align-items: center;
-  font-size: 20px;
+  font-size: 25px;
   gap: 3px;
   justify-content: flex-end;
   padding-right: 0px;
@@ -887,5 +887,4 @@ body {
 .progress-total {
   color: #e5e7eb;
   font-weight: bold;
-
 }
